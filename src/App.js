@@ -95,16 +95,5 @@ export default class App {
                 chatData: mockUsers,
             });
         }
-        // template = Handlebars.compile(MainContent);
-        //
-        // // this.appElement.innerHTML = template({
-        // //     profileData: mockProfile,
-        // // });
-        // this.appElement.innerHTML = template({
-        //     chatData: mockUsers,
-        // });
-        // this.appElement.innerHTML = template({
-        //     chatData: mockUsers,
-        // });
     }
 }
