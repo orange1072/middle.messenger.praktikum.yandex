@@ -1,10 +1,10 @@
-<div class="app">
+<div class="login-page">
     <h1>Вход</h1>
     <form action="#" method="post">
         <label for="name">Логин</label>
-        {{>Input id="name" name="login" type="text" placeholder="Логин"}}
+        {{>Input id="name" name="login" type="text" placeholder="Логин" class="input-under-line"}}
         <label for="password">Пароль</label>
-        {{>Input id="password" name="password" type="password" placeholder="Пароль"}}
+        {{>Input id="password" name="password" type="password" placeholder="Пароль" class="input-under-line"}}
         {{>Button class="btn btn-primary btn-authorization" text="Авторизоваться"}}
         {{>Link id="return-chat" class="no-account-link" text="Нет аккаунта?" href="#"}}
     </form>
