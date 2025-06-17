@@ -14,8 +14,8 @@
         <label for="password">Пароль</label>
         {{>Input id="password" name="password" type="password" placeholder="Пароль" class="input-under-line"}}
         <label for="passwordRepeat">Пароль еще раз</label>
-        {{>Input id="password" name="password" type="password" placeholder="Пароль еще раз" class="input-under-line"}}
-        {{>Button class="btn btn-primary btn-registration" text="Зарегистрироваться"}}
-        {{>Link id="return-chat" class="enter-link" text="Войти" href="#"}}
+        {{>Input id="passwordRepeat" name="passwordRepeat" type="password" placeholder="Пароль еще раз" class="input-under-line"}}
+        {{>Button class="btn btn-primary btn-registration" type="submit" text="Зарегистрироваться"}}
+        {{>Link id="return-chat" class="enter-link" data-page="LoginPage" text="Войти" href="#"}}
     </form>
 </div>

@@ -1,21 +1,23 @@
 import Handlebars from 'handlebars';
-import Button from '../components/Button.js';
-import { ErrorPage500 } from '../pages/errorPage500/index.js';
-import { ErrorPage404 } from '../pages/errorPage404/index.js';
-import Link from '../components/Link.js';
-import Input from '../components/Input.js';
-import { LoginPage } from '../pages/loginPage/index.js';
-import { RegistrationPage } from '../pages/registrationPage/index.js';
-import { ProfilePage } from '../pages/profilePage/index.js';
-import { FooterProfile } from '../components/Footer/Profile/index.js';
-import { ChangePasswordPage } from '../pages/changePasswordPage/index.js';
-import { ProfileRow } from '../components/Profile/profile-row/index.js';
-import Avatar from '../components/Avatar.js';
-import { ChangeDataPage } from '../pages/changeData/index.js';
-import { ChatItem } from '../components/Chat/chat-item/index.js';
-import { Header } from '../components/Main/header/index.js';
-import { mockProfile, mockUsers } from '../constants/index.js';
-import { MainContent } from '../components/Main/content/index.js';
+import Button from './components/Button.js';
+import { ErrorPage500 } from './pages/errorPage500/index.js';
+import { ErrorPage404 } from './pages/errorPage404/index.js';
+import Link from './components/Link.js';
+import Input from './components/Input.js';
+import { LoginPage } from './pages/loginPage/index.js';
+import { RegistrationPage } from './pages/registrationPage/index.js';
+import { ProfilePage } from './pages/profilePage/index.js';
+import { FooterProfile } from './components/Footer/Profile/index.js';
+import { ChangePasswordPage } from './pages/changePasswordPage/index.js';
+import { ProfileRow } from './components/Profile/profile-row/index.js';
+import Avatar from './components/Avatar.js';
+import { ChangeDataPage } from './pages/changeData/index.js';
+import { ChatItem } from './components/Chat/chat-item/index.js';
+import { Header } from './components/Main/header/index.js';
+import { mockProfile, mockUsers } from './constants/index.js';
+import { MainContent } from './components/Main/content/index.js';
+import { Nav } from './components/Nav/index.js';
+import { ChangeAvatarPage } from './pages/changeAvatarPage/index.js';
 
 Handlebars.registerPartial('Button', Button);
 Handlebars.registerPartial('Link', Link);
@@ -27,10 +29,13 @@ Handlebars.registerPartial('ChangeDataPage', ChangeDataPage);
 Handlebars.registerPartial('ChatItem', ChatItem);
 Handlebars.registerPartial('Header', Header);
 Handlebars.registerPartial('MainContent', MainContent);
+Handlebars.registerPartial('Nav', Nav);
+Handlebars.registerPartial('ChangeAvatarPage', ChangeAvatarPage);
 
 export default class App {
     constructor() {
         this.state = {
+            currentPage: 'MainContent',
             errorPage500: 'ErrorPage500',
             errorPage404: 'ErrorPage404',
             loginPage: 'LoginPage',
@@ -40,9 +45,36 @@ export default class App {
             changePasswordPage: 'ChangePasswordPage',
             profileRow: 'ProfileRow',
             changeDataPage: 'ChangeDataPage',
+            changeAvatarPage: 'ChangeAvatarPage',
             mainPage: 'MainContent',
         };
         this.appElement = document.getElementById('app');
+    }
+    renderPage(pageName) {
+        const pageTemplates = {
+            MainContent,
+            LoginPage,
+            RegistrationPage,
+            ProfilePage,
+            ChangePasswordPage,
+            ChangeDataPage,
+            ChangeAvatarPage,
+            ErrorPage404,
+            ErrorPage500,
+        };
+
+        const templateSource = pageTemplates[pageName];
+        if (!templateSource) {
+            console.warn(`Шаблон ${pageName} не найден`);
+            return;
+        }
+
+        const template = Handlebars.compile(templateSource);
+        const context = {
+            profileData: mockProfile,
+            chatData: mockUsers,
+        };
+        this.appElement.innerHTML = template(context);
     }
     render() {
         let template;
@@ -95,5 +127,19 @@ export default class App {
                 chatData: mockUsers,
             });
         }
+        template = Handlebars.compile(Nav);
+        this.appElement.innerHTML = template();
     }
 }
+
+document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[data-page]');
+    if (link) {
+        e.preventDefault();
+        const page = link.dataset.page;
+        const appInstance = new App();
+        appInstance.renderPage(page);
+    }
+});
+const appInstance = new App();
+appInstance.renderPage('MainContent');

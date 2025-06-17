@@ -5,7 +5,7 @@
         {{>Input id="name" name="login" type="text" placeholder="Логин" class="input-under-line"}}
         <label for="password">Пароль</label>
         {{>Input id="password" name="password" type="password" placeholder="Пароль" class="input-under-line"}}
-        {{>Button class="btn btn-primary btn-authorization" text="Авторизоваться"}}
-        {{>Link id="return-chat" class="no-account-link" text="Нет аккаунта?" href="#"}}
+        {{>Button class="btn btn-primary btn-authorization" type="submit" text="Авторизоваться"}}
+        {{>Link id="return-chat" class="no-account-link" data-page="RegistrationPage" text="Нет аккаунта?" href="#"}}
     </form>
 </div>
