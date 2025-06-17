@@ -12,13 +12,17 @@
     background-color: #ccc;
     cursor: not-allowed;
 }
-.btn-authorization{
+.btn-authorization {
     margin-top: 150px;
     margin-bottom: 20px;
 }
-.btn-registration{
+.btn-registration {
     margin-top: 50px;
     margin-bottom: 20px;
+}
+.btn-save {
+    width: 250px;
+    margin: 50px auto;
 }
 .icon {
     margin-right: 5px;
@@ -26,38 +30,216 @@
 
 .app {
     text-align: center;
-    font-family: "Roboto Slab", serif;
+    font-family: 'Roboto Slab', serif;
 }
 
-h1 {
-    margin-top: 280px;
-}
+
 h2 {
     margin-bottom: 50px;
+    text-align: center;
 }
-
+.registration-page, .login-page{
+    margin: 50px auto;
+    text-align: center;
+    height: 670px;
+    width: 860px;
+    border: 1px solid #999999;
+    border-radius: 5%;
+    box-shadow: 5px 5px 5px #999999;
+}
+.login-page{
+    height: 530px;
+    width: 700px;
+}
 .return-link {
     margin-top: 20px;
 }
 form {
     display: flex;
     flex-direction: column;
-   padding-top: 50px;
+    padding-top: 50px;
     margin: auto;
-
-    width: 340px;
+    width: 500px;
     height: 460px;
 }
 input {
     margin-bottom: 20px;
     border: none;
-    border-bottom: 2px solid #3369f3;
     outline: none;
 }
+.input-under-line {
+    border-bottom: 2px solid #3369f3;
+}
 label {
-    padding-right: 300px;
+   text-align: start;
     padding-bottom: 2px;
     font-size: small;
-    color: gray;
     text-wrap: nowrap;
+}
+.avatar,.profile-avatar {
+    display: flex;
+    margin: 100px auto auto auto;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-color: #808080;
+}
+.profile-details {
+    display: flex;
+    width: 100vh;
+    text-align: center;
+    margin: auto;
+    justify-content: space-between;
+}
+
+.text-right {
+    text-align: right;
+}
+.background-none {
+    background-color: transparent;
+}
+.border-bottom-line {
+    border-bottom: 1px solid #eaeaea;
+}
+
+.profile-details-column {
+    flex-direction: column;
+}
+.footer {
+    width: 500px;
+    text-align: left;
+    margin: auto;
+    padding-top: 50px;
+}
+.exit-link-red {
+    color: red;
+}
+a {
+    text-decoration: none;
+}
+.profile-data {
+    width: 500px;
+    margin: auto;
+}
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eaeaea;
+    height: 30px;
+    padding-top: 10px;
+}
+.profile-row:nth-last-child(-n + 1) {
+    border-bottom: none;
+}
+.profile-row-data-text-grey {
+    color: #999999;
+}
+img {
+    width: 50px;
+    height: 50px;
+}
+.main-header {
+    width: 310px;
+    height: 100px;
+    background-color: #ffffff;
+
+}
+.main-header-form {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 20px;
+}
+.main-header-link {
+    display: flex;
+    justify-content: flex-end;
+    color: #999999;
+}
+.main-header-input {
+    background-color: #efefef;
+    width: 500px;
+    border-radius: 5%;
+    height: 32px;
+    text-align: center;
+    margin-top: 20px;
+}
+.chat-data{
+    width:500px;
+    height:720px;
+    overflow-y: scroll;
+}
+.chat-row{
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    font-family: sans-serif;
+    background-color: #fff;
+}
+.chat-row-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #808080;
+    margin-right: 10px;
+}
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+.chat-name {
+    font-weight: 600;
+    color: #000;
+}
+
+.chat-time {
+    font-size: 12px;
+    color: #888;
+}
+
+.chat-subtitle {
+    font-size: 14px;
+    color: #888;
+}
+
+.chat-badge {
+    background-color: #2962ff;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+}
+.chat-content {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.main-content{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.chat-data-container{
+    display: flex;
+}
+.message-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:auto;
+}
+.block-center{
+    margin-top: 280px;
+    text-align: center;
+}
+.change-data{
+    display: flex;
+    flex-direction: column;
 }
