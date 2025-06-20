@@ -1,0 +1,39 @@
+{
+  "name": "mf-project",
+  "version": "1.0.0",
+  "description": "---",
+  "main": "index.js",
+  "engines" : { "node" : ">=12" },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "start": "vite build && node server.cjs.js ",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/orange1072/middle.messenger.praktikum.yandex.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/orange1072/middle.messenger.praktikum.yandex/issues"
+  },
+  "homepage": "https://github.com/orange1072/middle.messenger.praktikum.yandex#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "eslint": "^9.28.0",
+    "postcss-preset-env": "^10.2.0",
+    "prettier": "3.5.3",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "express": "^5.1.0",
+    "handlebars": "^4.7.8",
+    "postcss": "^8.5.4",
+    "postcss-cli": "^11.0.1"
+  }
+}

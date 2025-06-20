@@ -1,0 +1,1 @@
+export default `<input  id="{{id}}" class="{{class}}" name="{{name}}" type="{{type}}" placeholder="{{placeholder}}" accept="{{accept}}" src="{{src}}" value="{{value}}"  {{#if disabled}}disabled{{/if}} >{{text}}</input>`;
