@@ -17,7 +17,7 @@ import { Header } from './components/Main/header/index.js';
 import { mockProfile, mockUsers } from './constants/index.js';
 import { MainContent } from './components/Main/content/index.js';
 import { Nav } from './components/Nav/index.js';
-import { ChangeAvatarPage } from './pages/changeAvatarPage/index.js';
+import { ChangeAvatar } from './components/Profile/avatar/index.js';
 
 Handlebars.registerPartial('Button', Button);
 Handlebars.registerPartial('Link', Link);
@@ -30,7 +30,7 @@ Handlebars.registerPartial('ChatItem', ChatItem);
 Handlebars.registerPartial('Header', Header);
 Handlebars.registerPartial('MainContent', MainContent);
 Handlebars.registerPartial('Nav', Nav);
-Handlebars.registerPartial('ChangeAvatarPage', ChangeAvatarPage);
+Handlebars.registerPartial('ChangeAvatar', ChangeAvatar);
 
 export default class App {
     constructor() {
@@ -45,7 +45,7 @@ export default class App {
             changePasswordPage: 'ChangePasswordPage',
             profileRow: 'ProfileRow',
             changeDataPage: 'ChangeDataPage',
-            changeAvatarPage: 'ChangeAvatarPage',
+            changeAvatar: 'ChangeAvatar',
             mainPage: 'MainContent',
         };
         this.appElement = document.getElementById('app');
@@ -58,7 +58,7 @@ export default class App {
             ProfilePage,
             ChangePasswordPage,
             ChangeDataPage,
-            ChangeAvatarPage,
+            ChangeAvatar,
             ErrorPage404,
             ErrorPage500,
         };
