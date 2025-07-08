@@ -3,6 +3,7 @@ import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Label } from '../../components/label';
 import { Avatar } from '../../components/avatar';
+import { initFieldValidation } from '../../utils/validationRules';
 
 export class ChangeData extends Block {
     constructor() {
@@ -111,7 +112,12 @@ export class ChangeData extends Block {
             submitButton,
         });
     }
-
+    protected componentDidMount(): void {
+        initFieldValidation('login');
+        initFieldValidation('first_name');
+        initFieldValidation('second_name');
+        initFieldValidation('phone');
+    }
     protected render(): string {
         return `
 <div class="change-data">

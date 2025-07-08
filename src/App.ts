@@ -8,15 +8,16 @@ import { Profile } from './pages/profile';
 import { ChangePassword } from './pages/changePassword';
 import { Chat } from './pages/chat';
 import { Nav } from './components/Nav';
+import { initFieldValidation } from './utils/validationRules';
 
 export default class App {
     private appElement: HTMLElement | null;
-    currentPage: Chat;
-    state: string = 'Chat';
+    currentPage: Nav;
+    state: string = 'Nav';
 
     constructor() {
         this.appElement = document.getElementById('app');
-        this.currentPage = new Chat();
+        this.currentPage = new Nav();
     }
 
     render(): void {
@@ -55,6 +56,22 @@ export default class App {
             default:
                 this.appElement.appendChild(new Nav().getContent());
         }
+        this.initValidation();
+    }
+    initValidation() {
+        const ids = [
+            'login',
+            'password',
+            'phone',
+            'second_name',
+            'first_name',
+            'email',
+            'message',
+            'oldPassword',
+            'newPassword',
+        ];
+
+        ids.forEach((id) => initFieldValidation(id));
     }
 }
 const appInstance = new App();

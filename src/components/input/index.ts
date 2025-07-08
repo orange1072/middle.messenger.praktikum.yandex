@@ -17,7 +17,6 @@ export class Input extends Block<TInputProps> {
     constructor(props: TInputProps) {
         super(props);
     }
-
     protected render(): string {
         return `
 <div class="form-field">

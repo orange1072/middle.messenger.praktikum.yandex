@@ -3,6 +3,7 @@ import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Link } from '../../components/link';
 import { Label } from '../../components/label';
+import { initFieldValidation } from '../../utils/validationRules';
 
 export class Registration extends Block {
     constructor() {
@@ -127,7 +128,15 @@ export class Registration extends Block {
             errorMessage: 'Пароли не совпадают',
         });
     }
-
+    protected componentDidMount(): void {
+        initFieldValidation('email');
+        initFieldValidation('login');
+        initFieldValidation('first_name');
+        initFieldValidation('second_name');
+        initFieldValidation('phone');
+        initFieldValidation('password');
+        initFieldValidation('password');
+    }
     protected render(): string {
         return `
 <div class="registration-page">

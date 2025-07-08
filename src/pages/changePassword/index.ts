@@ -3,6 +3,7 @@ import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Label } from '../../components/label';
 import { Avatar } from '../../components/avatar';
+import { initFieldValidation } from '../../utils/validationRules';
 
 export class ChangePassword extends Block {
     constructor() {
@@ -67,7 +68,10 @@ export class ChangePassword extends Block {
             submitButton,
         });
     }
-
+    protected componentDidMount(): void {
+        initFieldValidation('oldPassword');
+        initFieldValidation('newPassword');
+    }
     protected render(): string {
         return `
 <div class="change-password-page">

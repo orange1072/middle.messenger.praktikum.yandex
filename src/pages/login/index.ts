@@ -65,36 +65,8 @@ export class Login extends Block {
         });
     }
     protected componentDidMount(): void {
-        const validateLogin = initFieldValidation('login');
-        const validatePassword = initFieldValidation('password');
-
-        const form = document.getElementById(
-            'myForm',
-        ) as HTMLFormElement | null;
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-
-                const errors = [validateLogin?.(), validatePassword?.()].filter(
-                    (msg) => msg !== '',
-                );
-
-                if (errors.length > 0) {
-                    alert('Форма содержит ошибки:\n' + errors.join('\n'));
-                    return;
-                }
-
-                // ✅ Сбор данных формы
-                const formData = new FormData(form);
-                const data: Record<string, string> = {};
-
-                formData.forEach((value, key) => {
-                    data[key] = value.toString();
-                });
-
-                console.log('Данные формы:', data);
-            });
-        }
+        initFieldValidation('login');
+        initFieldValidation('password');
     }
     protected render(): string {
         return `
