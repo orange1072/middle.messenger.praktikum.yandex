@@ -60,10 +60,8 @@ export class Profile extends Block {
         </div>
         <div class="border-bottom-line"> {{{changePasswordLink}}}</div>
        <div> {{{exitLink}}}</div>
-       
-        </div>
-      
-         </div>
+               </div>
+            </div>
          
     `;
     }

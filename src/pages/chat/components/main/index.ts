@@ -27,9 +27,6 @@ export class Main extends Block {
       src="/static/sendMessage.png" alt="sendMessage"></div>
       
       </div>
-       
-
-
 </div>
 
         `;
