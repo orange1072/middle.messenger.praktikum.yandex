@@ -3,7 +3,7 @@ import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Label } from '../../components/label';
 import { Avatar } from '../../components/avatar';
-import { initFieldValidation } from '../../utils/validationRules';
+import { createValidator } from '../../utils/createValidator';
 
 export class ChangePassword extends Block {
     constructor() {
@@ -21,6 +21,9 @@ export class ChangePassword extends Block {
             placeholder: 'Пароль',
             type: 'password',
             value: '12345',
+            events: {
+                'blur:input': createValidator('oldPassword'),
+            },
         });
         const newPasswordInputLabel = new Label({
             text: 'Новый пароль',
@@ -32,6 +35,9 @@ export class ChangePassword extends Block {
             value: '12345',
             placeholder: 'Новый пароль',
             type: 'password',
+            events: {
+                'blur:input': createValidator('newPassword'),
+            },
         });
         const newPasswordRepeatInputLabel = new Label({
             text: 'Повторите новый пароль',
@@ -51,7 +57,39 @@ export class ChangePassword extends Block {
             events: {
                 click: (e) => {
                     e.preventDefault();
-                    console.log(e);
+
+                    const oldPasswordEl = document.getElementById(
+                        'oldPassword',
+                    ) as HTMLInputElement;
+                    const newPasswordEl = document.getElementById(
+                        'newPassword',
+                    ) as HTMLInputElement;
+
+                    const validators = [
+                        createValidator('oldPassword'),
+                        createValidator('newPassword'),
+                    ];
+
+                    // вызвать валидацию всех полей
+                    const errors = validators
+                        .map((fn) => {
+                            fn({ target: oldPasswordEl } as unknown as Event);
+                            return fn === validators[0] && oldPasswordEl
+                                ? oldPasswordEl.classList.contains('invalid')
+                                : newPasswordEl.classList.contains('invalid');
+                        })
+                        .filter((isInvalid) => isInvalid);
+
+                    if (errors.length > 0) {
+                        console.log('❌ Форма содержит ошибки');
+                    } else {
+                        console.log('✅ Форма валидна!');
+                        const data = {
+                            login: oldPasswordEl?.value,
+                            password: newPasswordEl?.value,
+                        };
+                        console.log('📦 Данные формы:', data);
+                    }
                 },
             },
             attr: { class: 'btn btn-primary btn-save' },
@@ -68,10 +106,7 @@ export class ChangePassword extends Block {
             submitButton,
         });
     }
-    protected componentDidMount(): void {
-        initFieldValidation('oldPassword');
-        initFieldValidation('newPassword');
-    }
+
     protected render(): string {
         return `
 <div class="change-password-page">

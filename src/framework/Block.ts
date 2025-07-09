@@ -43,14 +43,25 @@ export abstract class Block<TProps extends BlockProps = BlockProps> {
         eventBus.emit(Block.EVENTS.INIT);
     }
 
-    private _addEvents(): void {
+    private _addEvents() {
         const { events = {} } = this.props;
 
-        Object.entries(events).forEach(([eventName, handler]) => {
-            this._element?.addEventListener(
-                eventName,
-                handler as EventListener,
-            );
+        Object.entries(events).forEach(([eventAndSelector, listener]) => {
+            const [event, selector] = eventAndSelector.split(':');
+
+            if (selector) {
+                const child = this.getContent().querySelector(selector);
+                if (child) {
+                    child.addEventListener(event, listener as EventListener);
+                } else {
+                    console.warn(`⚠️ Selector ${selector} not found`);
+                }
+            } else {
+                this.getContent().addEventListener(
+                    event,
+                    listener as EventListener,
+                );
+            }
         });
     }
 

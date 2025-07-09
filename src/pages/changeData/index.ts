@@ -3,7 +3,7 @@ import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Label } from '../../components/label';
 import { Avatar } from '../../components/avatar';
-import { initFieldValidation } from '../../utils/validationRules';
+import { createValidator } from '../../utils/createValidator';
 
 export class ChangeData extends Block {
     constructor() {
@@ -23,8 +23,7 @@ export class ChangeData extends Block {
             placeholder: 'Почта',
             type: 'email',
             events: {
-                input: (e) =>
-                    console.log('email:', (e.target as HTMLInputElement).value),
+                'blur:input': createValidator('email'),
             },
         });
         const loginInputLabel = new Label({
@@ -37,6 +36,9 @@ export class ChangeData extends Block {
             value: 'ivanivanov',
             placeholder: 'Логин',
             type: 'text',
+            events: {
+                'blur:input': createValidator('login'),
+            },
         });
         const firstNameInputLabel = new Label({
             text: 'Имя',
@@ -48,6 +50,9 @@ export class ChangeData extends Block {
             placeholder: 'Имя',
             value: 'Иван',
             type: 'text',
+            events: {
+                'blur:input': createValidator('first_name'),
+            },
         });
         const lastNameInputLabel = new Label({
             text: 'Фамилия',
@@ -59,6 +64,9 @@ export class ChangeData extends Block {
             value: 'Иванов',
             placeholder: 'Фамилия',
             type: 'text',
+            events: {
+                'blur:input': createValidator('second_name'),
+            },
         });
         const displayNameInputLabel = new Label({
             text: 'Имя в чате',
@@ -81,6 +89,9 @@ export class ChangeData extends Block {
             value: '8 (888) 123-45-55',
             placeholder: 'Телефон',
             type: 'tel',
+            events: {
+                'blur:input': createValidator('phone'),
+            },
         });
 
         const submitButton = new Button({
@@ -89,7 +100,71 @@ export class ChangeData extends Block {
             events: {
                 click: (e) => {
                     e.preventDefault();
-                    console.log(e);
+
+                    // Собираем все элементы
+                    const emailEl = document.getElementById(
+                        'email',
+                    ) as HTMLInputElement;
+                    const loginEl = document.getElementById(
+                        'login',
+                    ) as HTMLInputElement;
+                    const firstNameEl = document.getElementById(
+                        'first_name',
+                    ) as HTMLInputElement;
+                    const secondNameEl = document.getElementById(
+                        'second_name',
+                    ) as HTMLInputElement;
+                    const phoneEl = document.getElementById(
+                        'phone',
+                    ) as HTMLInputElement;
+
+                    // Массив полей
+                    const fields = [
+                        { key: 'email', el: emailEl },
+                        { key: 'login', el: loginEl },
+                        { key: 'first_name', el: firstNameEl },
+                        { key: 'second_name', el: secondNameEl },
+                        { key: 'phone', el: phoneEl },
+                    ] as const;
+
+                    type FieldKey =
+                        | 'email'
+                        | 'login'
+                        | 'first_name'
+                        | 'second_name'
+                        | 'phone';
+                    // Создаем валидаторы
+                    const validators: Record<FieldKey, EventListener> = {
+                        email: createValidator('email'),
+                        login: createValidator('login'),
+                        first_name: createValidator('first_name'),
+                        second_name: createValidator('second_name'),
+                        phone: createValidator('phone'),
+                    };
+
+                    // Запускаем валидацию всех полей
+                    fields.forEach(({ key, el }) => {
+                        validators[key]({ target: el } as unknown as Event);
+                    });
+
+                    // Проверяем ошибки
+                    const errors = fields.filter(({ el }) =>
+                        el.classList.contains('invalid'),
+                    );
+
+                    if (errors.length > 0) {
+                        console.log('❌ Форма содержит ошибки');
+                    } else {
+                        console.log('✅ Форма валидна!');
+                        const data = {
+                            email: emailEl.value,
+                            login: loginEl.value,
+                            first_name: firstNameEl.value,
+                            second_name: secondNameEl.value,
+                            phone: phoneEl.value,
+                        };
+                        console.log('📦 Данные формы:', data);
+                    }
                 },
             },
             attr: { class: 'btn btn-primary btn-save' },
@@ -112,12 +187,7 @@ export class ChangeData extends Block {
             submitButton,
         });
     }
-    protected componentDidMount(): void {
-        initFieldValidation('login');
-        initFieldValidation('first_name');
-        initFieldValidation('second_name');
-        initFieldValidation('phone');
-    }
+
     protected render(): string {
         return `
 <div class="change-data">
