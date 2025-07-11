@@ -1,0 +1,135 @@
+.chat-data{
+    width:500px;
+    height:720px;
+    overflow-y: scroll;
+}
+
+.chat-row{
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    font-family: sans-serif;
+    background-color: #fff;
+}
+
+.chat-row-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #808080;
+    margin-right: 10px;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+.chat-name {
+    font-weight: 600;
+    color: #000;
+}
+
+.chat-time {
+    font-size: 12px;
+    color: #888;
+}
+
+.chat-subtitle {
+    font-size: 14px;
+    color: #888;
+}
+
+.chat-badge {
+    background-color: #2962ff;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+}
+
+.chat-content {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.chat-data-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.chat-data-container-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-data-container-content-main{
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.chat-data-message-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.message-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.send-button{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+
+.chat-download {
+    height: 32px;
+    width: 32px;
+}
+
+.chat-sendmsg{
+    height: 28px;
+    width: 28px;
+}
+
+.chat-message-container{
+    flex-direction: column;
+    display: flex;
+    width: 98%;
+    border-radius: 30px;
+    text-align: left;
+}
+
+.chat-message{
+    height:20px;
+    border: 2px solid #888;
+    background-color: #EFEFEF;
+    border-radius: 30px;
+}
+
+.chat-enter-message{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.chat-sendmsg-container,.chat-download-container{
+    width: 50px;
+    margin: 0 10px;
+}

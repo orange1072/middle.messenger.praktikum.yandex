@@ -11,6 +11,9 @@
   <li>npm install — установка зависимостей</li>
   <li>npm run start —  сборка и запуск стабильной версии</li>
   <li>npm run dev — сборка для разработки</li>
+  <li>npm run prebuild — проверка типов ts</li>
+  <li>npm run eslint — eslint</li>
+  <li>npm run lint:css - проверка стилей</li>
 </ul>
 
 
