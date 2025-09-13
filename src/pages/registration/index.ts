@@ -4,9 +4,19 @@ import { Input } from '../../components/input';
 import { Link } from '../../components/link';
 import { Label } from '../../components/label';
 import { createValidator } from '../../utils/createValidator';
+import { AuthAPI } from '../../api/auth';
+import { Router } from '../../framework/Router';
 
 export class Registration extends Block {
     constructor() {
+        const validators = {
+            email: createValidator('email'),
+            login: createValidator('login'),
+            first_name: createValidator('first_name'),
+            second_name: createValidator('second_name'),
+            phone: createValidator('phone'),
+            password: createValidator('password'),
+        } as const;
         const emailInputLabel = new Label({
             text: 'Почта',
             for: 'email',
@@ -18,7 +28,8 @@ export class Registration extends Block {
             type: 'email',
             attr: { class: 'input-under-line' },
             events: {
-                'blur:input': createValidator('email'),
+                'input:input': validators.email,
+                'blur:input': validators.email,
             },
         });
         const loginInputLabel = new Label({
@@ -32,7 +43,8 @@ export class Registration extends Block {
             type: 'text',
             attr: { class: 'input-under-line' },
             events: {
-                'blur:input': createValidator('login'),
+                'input:input': validators.login,
+                'blur:input': validators.login,
             },
         });
         const firstNameInputLabel = new Label({
@@ -46,7 +58,8 @@ export class Registration extends Block {
             type: 'text',
             attr: { class: 'input-under-line' },
             events: {
-                'blur:input': createValidator('first_name'),
+                'input:input': validators.first_name,
+                'blur:input': validators.first_name,
             },
         });
         const lastNameInputLabel = new Label({
@@ -60,7 +73,8 @@ export class Registration extends Block {
             type: 'text',
             attr: { class: 'input-under-line' },
             events: {
-                'blur:input': createValidator('second_name'),
+                'input:input': validators.second_name,
+                'blur:input': validators.second_name,
             },
         });
         const phoneInputLabel = new Label({
@@ -74,7 +88,8 @@ export class Registration extends Block {
             type: 'tel',
             attr: { class: 'input-under-line' },
             events: {
-                'blur:input': createValidator('phone'),
+                'input:input': validators.phone,
+                'blur:input': validators.phone,
             },
         });
         const passwordInputLabel = new Label({
@@ -88,7 +103,8 @@ export class Registration extends Block {
             type: 'password',
             attr: { class: 'input-under-line' },
             events: {
-                'blur:input': createValidator('password'),
+                'input:input': validators.password,
+                'blur:input': validators.password,
             },
         });
         const passwordRepeatInputLabel = new Label({
@@ -107,7 +123,7 @@ export class Registration extends Block {
             text: 'Зарегистрироваться',
             type: 'submit',
             events: {
-                click: (e) => {
+                click: async (e) => {
                     e.preventDefault();
 
                     // Собираем все элементы
@@ -133,7 +149,6 @@ export class Registration extends Block {
                         'passwordRepeat',
                     ) as HTMLInputElement;
 
-                    // Массив полей
                     const fields = [
                         { key: 'email', el: emailEl },
                         { key: 'login', el: loginEl },
@@ -142,23 +157,6 @@ export class Registration extends Block {
                         { key: 'phone', el: phoneEl },
                         { key: 'password', el: passwordEl },
                     ] as const;
-
-                    type FieldKey =
-                        | 'email'
-                        | 'login'
-                        | 'first_name'
-                        | 'second_name'
-                        | 'phone'
-                        | 'password';
-                    // Создаем валидаторы
-                    const validators: Record<FieldKey, EventListener> = {
-                        email: createValidator('email'),
-                        login: createValidator('login'),
-                        first_name: createValidator('first_name'),
-                        second_name: createValidator('second_name'),
-                        phone: createValidator('phone'),
-                        password: createValidator('password'),
-                    };
 
                     // Запускаем валидацию всех полей
                     fields.forEach(({ key, el }) => {
@@ -183,6 +181,7 @@ export class Registration extends Block {
                             passwordRepeatEl.classList.remove('invalid');
 
                             console.log('✅ Форма валидна!');
+
                             const data = {
                                 email: emailEl.value,
                                 login: loginEl.value,
@@ -191,6 +190,17 @@ export class Registration extends Block {
                                 phone: phoneEl.value,
                                 password: passwordEl.value,
                             };
+                            const auth = new AuthAPI();
+                            const router = new Router('#app');
+                            await auth.signup({
+                                first_name: data.first_name,
+                                password: data.password,
+                                phone: data.phone,
+                                second_name: data.second_name,
+                                login: data.login,
+                                email: data.email,
+                            });
+                            router.go('/messenger');
                             console.log('📦 Данные формы:', data);
                         }
                     }
@@ -201,13 +211,7 @@ export class Registration extends Block {
 
         const loginLink = new Link({
             text: 'Войти',
-            href: '/login',
-            events: {
-                click: (e: Event) => {
-                    e.preventDefault();
-                    alert('Переход на страницу входа');
-                },
-            },
+            href: '/',
             attr: { class: 'enter-link' },
         });
 
@@ -235,7 +239,7 @@ export class Registration extends Block {
     protected render(): string {
         return `
 <div class="registration-page">
-      <form  class="form-container" id="myForm">
+      <form  class="form-container" id="signUpForm">
         <h1>Регистрация</h1>
         {{{emailInputLabel}}}
         {{{emailInput}}}

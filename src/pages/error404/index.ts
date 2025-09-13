@@ -6,7 +6,7 @@ export class Error404 extends Block {
         const returnLink = new Link({
             text: 'Вернуться к чатам',
             attr: { class: 'return-link' },
-            href: '#',
+            href: '/messenger',
             dataPage: 'MainContent',
         });
 

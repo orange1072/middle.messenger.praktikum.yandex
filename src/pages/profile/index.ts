@@ -1,7 +1,7 @@
 import { Block } from '../../framework/Block';
 import { Link } from '../../components/link';
-import { mockProfile } from '../../constants';
 import { Avatar } from '../../components/avatar';
+import { mockProfile } from '../../constants';
 
 export class Profile extends Block {
     constructor() {
@@ -13,20 +13,20 @@ export class Profile extends Block {
         const changeDataLink = new Link({
             text: 'Изменить данные',
             dataPage: 'ChangeDataPage',
-            href: '#',
+            href: '/change-data',
             attr: { class: 'change-data' },
         });
 
         const changePasswordLink = new Link({
             text: 'Изменить пароль',
             dataPage: 'ChangePasswordPage',
-            href: '#',
+            href: '/change-password',
             attr: { class: 'change-password' },
         });
         const exitLink = new Link({
             text: 'Выйти',
             dataPage: 'MainContent',
-            href: '#',
+            href: '/',
             attr: { class: 'exit-link-red' },
         });
 
@@ -39,7 +39,7 @@ export class Profile extends Block {
     }
     protected render(): string {
         return `
-<div>
+<div class="profile-page">
 {{{profileAvatar}}}
 
         <div class="profile-data">
@@ -62,7 +62,7 @@ export class Profile extends Block {
        <div> {{{exitLink}}}</div>
                </div>
             </div>
-         
+        
     `;
     }
 }

@@ -2,17 +2,19 @@ import { Link } from '../../../../components/link';
 import { Block } from '../../../../framework/Block';
 import { Input } from '../../../../components/input';
 import { Avatar } from '../../../../components/avatar';
+import { LogoutAPI } from '../../../../api/logout';
 
 export class MainPageHeader extends Block {
     constructor() {
         const mainHeaderLink = new Link({
-            text: 'Профиль >',
+            text: 'Профиль > временный логаут',
             dataPage: 'ProfilePage',
             href: '#',
             events: {
-                click: (e: Event) => {
+                click: async (e: Event) => {
                     e.preventDefault();
-                    alert('Переход на страницу входа');
+                    const logout = new LogoutAPI();
+                    await logout.request();
                 },
             },
             attr: { class: 'main-header-link' },
