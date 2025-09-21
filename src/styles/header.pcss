@@ -1,3 +1,4 @@
+@import "global.pcss";
 .main-header {
     width: 310px;
     height: 60px;
@@ -12,8 +13,10 @@
 }
 
 .main-header-link {
+    display: flex;
     color: #999;
-    margin-left: auto;
+    margin-right: 15px;
+    justify-content: flex-end;
 }
 
 .main-header-input {
@@ -23,4 +26,9 @@
     height: 32px;
     text-align: left;
     padding: 0 12px;
+}
+.main-header-input>input{
+    background-color: transparent;
+    text-align: center;
+    padding-top: 7px;
 }

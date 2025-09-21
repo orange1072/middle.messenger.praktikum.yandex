@@ -1,3 +1,10 @@
+@import "global.pcss";
+
+body {
+    display: block;
+    margin: 0;
+}
+
 .icon {
     margin-right: 5px;
 }
@@ -23,6 +30,13 @@ h2 {
     border-radius: 5%;
     box-shadow: 5px 5px 5px #999;
 }
+.change-avatar{
+    width: 260px;
+    height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly
+}
 
 .login-page {
     height: 530px;
@@ -39,7 +53,6 @@ h2 {
     padding-top: 30px;
     margin: auto;
     width: 500px;
-    height: 460px;
 }
 
 input {
@@ -64,7 +77,6 @@ label {
 .avatar,
 .profile-avatar {
     display: flex;
-    margin: 100px auto auto;
     width: 130px;
     height: 130px;
     border-radius: 50%;
@@ -109,7 +121,8 @@ img {
 
 .change-data {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    width: 100%;
 }
 
 .enter-link {
@@ -125,3 +138,41 @@ img {
 input.invalid {
     border: 1px solid red;
 }
+
+.back-arrow{
+    border-left: 1px solid #e5e5e5;
+    width: 5%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    flex-direction: row;
+    rotate: 180deg;
+    background: #f7f7f7;
+    align-items: center;
+}
+
+.flex-container-col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: auto;
+}
+ .flex-container-row {
+    display: flex;
+    flex-direction: row;
+     width: 100%;
+     margin: auto;
+ }
+ .change-password-page{
+     display: flex;
+     flex-direction: row;
+     width: 100%;
+ }
+ .main-head-container {
+     display: flex;
+     flex-direction: column;
+     padding-top: 30px;
+     margin: auto;
+     width: 310px;
+ }
