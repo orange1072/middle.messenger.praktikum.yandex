@@ -4,14 +4,37 @@ import { Input } from '../../components/input';
 import { Label } from '../../components/label';
 import { Avatar } from '../../components/avatar';
 import { createValidator } from '../../utils/createValidator';
+import { Link } from '../../components/link';
+import { Router } from '../../framework/Router';
 
 export class ChangeData extends Block {
     constructor() {
+        const router = new Router();
         const avatar = new Avatar({
             src: 'avatar',
             attr: { class: 'profile-avatar' },
         });
-
+        const backArrowLink = new Link({
+            text: '',
+            hasIcon: true,
+            attr: { class: 'back-arrow' },
+            href: '',
+            events: {
+                click: (e) => {
+                    e.preventDefault();
+                    router.back();
+                },
+            },
+            src: '/static/sendMessage.png',
+            iconClass: 'back-arrow-link',
+            iconStyle: 'width: 40px; height: 40px;',
+        });
+        const changeAvatar = new Link({
+            text: 'Поменять аватар',
+            attr: { class: 'change-avatar-link' },
+            href: '/change-avatar',
+            events: { click: () => router.go('/change-avatar') },
+        });
         const emailInputLabel = new Label({
             text: 'Почта',
             for: 'email',
@@ -185,14 +208,20 @@ export class ChangeData extends Block {
             lastNameInput,
             phoneInput,
             submitButton,
+            backArrowLink,
+            changeAvatar,
         });
     }
 
     protected render(): string {
         return `
 <div class="change-data">
-  <a href="#" class="change-avatar-link"  data-page="ChangeAvatar">{{{avatar}}}</a>
-      <form class="profile-data form-container">
+
+{{{backArrowLink}}}
+    
+  <div class="flex-container-col">
+{{{changeAvatar}}}
+            <form class="profile-data form-container">
       <div class="profile-row">{{{emailInputLabel}}}
         {{{emailInput}}}</div>  
         <div class="profile-row"> {{{loginInputLabel}}}
@@ -213,6 +242,9 @@ export class ChangeData extends Block {
         
       </form>
       </div>
+</div>
+  
+      
     `;
     }
 }

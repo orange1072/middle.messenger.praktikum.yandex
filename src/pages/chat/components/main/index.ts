@@ -2,6 +2,7 @@ import { Block } from '../../../../framework/Block';
 import { Input } from '../../../../components/input';
 import { ChatsAPI, ChatUserDTO } from '../../../../api/chats';
 import { ChatSocket } from '../../../../utils/socket';
+import { Link } from '../../../../components/link';
 
 type TProps = {
     userId?: number;
@@ -16,8 +17,64 @@ type TProps = {
 
 export class Main extends Block<TProps> {
     private socket: ChatSocket | null = null;
+    constructor(props: TProps) {
+        const iconModalLink = new Link({
+            id: 'icon-modal',
+            text: '',
+            hasIcon: true,
+            href: '',
+            events: {
+                click: (e) => {
+                    console.log('click');
+                    e.preventDefault();
+                    const block = document.getElementById('hiddenModal');
+                    if (block) {
+                        block.classList.toggle('active');
+                    }
+                },
+            },
+            src: '../../../../../static/Ellipse%2031.png',
+            iconClass: 'modal-icon-size',
+            iconStyle: 'width: 22px; height: 22px;',
+        });
+        const addUserLink = new Link({
+            text: 'Добавить пользователя',
+            hasIcon: true,
+            href: '',
+            events: {
+                click: (e) => {
+                    console.log('click');
+                    e.preventDefault();
+                    const block = document.getElementById('userAddModal');
+                    if (block) {
+                        block.classList.toggle('active');
+                    }
+                },
+            },
+            src: '../../../../../static/Ellipse%2034.png',
+            iconClass: 'modal-icon-size',
+            iconStyle: 'width: 22px; height: 22px;',
+        });
 
-    constructor(props: TProps = {}) {
+        const deleteUserLink = new Link({
+            text: 'Удалить пользователя',
+            hasIcon: true,
+            href: '',
+            events: {
+                click: (e) => {
+                    console.log('click');
+                    e.preventDefault();
+                    const block = document.getElementById('deleteUserModal');
+                    if (block) {
+                        block.classList.toggle('active');
+                    }
+                },
+            },
+            src: '../../../../../static/Ellipse%2033.png',
+            iconClass: 'modal-icon-size',
+            iconStyle: 'width: 22px; height: 22px;',
+        });
+
         const messageInput = new Input({
             name: 'message',
             type: 'text',
@@ -45,11 +102,16 @@ export class Main extends Block<TProps> {
             ...props,
             defaultBlock,
             messageInput,
+            addUserLink,
+            iconModalLink,
+            deleteUserLink,
             messages: [],
             users: [],
             events: {
                 'click:.chat-sendmsg-container': () => {
-                    const input = document.getElementById('message') as HTMLInputElement | null;
+                    const input = document.getElementById(
+                        'message',
+                    ) as HTMLInputElement | null;
                     const text = (input?.value || '').trim();
                     if (text) {
                         this.sendMessage(text);
@@ -60,7 +122,10 @@ export class Main extends Block<TProps> {
         });
     }
 
-    protected componentDidUpdate(_oldProps: TProps, _newProps: TProps): boolean {
+    protected componentDidUpdate(
+        _oldProps: TProps,
+        _newProps: TProps,
+    ): boolean {
         if (this.props.userId && this.props.chatId && !this.socket) {
             const api = new ChatsAPI();
             api.getToken(this.props.chatId).then(({ token }) => {
@@ -74,9 +139,13 @@ export class Main extends Block<TProps> {
                 );
                 this.socket.connect();
             });
-            api.getUsers(this.props.chatId).then((users) => this.setProps({ users }));
+            api.getUsers(this.props.chatId).then((users) =>
+                this.setProps({ users }),
+            );
         }
-        const list = this.element?.querySelector('.messages-list') as HTMLElement | null;
+        const list = this.element?.querySelector(
+            '.messages-list',
+        ) as HTMLElement | null;
         if (list) {
             list.scrollTop = list.scrollHeight;
         }
@@ -117,14 +186,28 @@ export class Main extends Block<TProps> {
       <div class="messages-pane">
         <div class="main-chat-header">
           <div class="chat-companion">Вадим</div>
-          <div class="chat-header-actions">⋯</div>
+          <div class="icon-modal-open"> {{{iconModalLink}}}</div>
+        
+         
+          <div id="hiddenModal"  class="chat-header-actions">
+          <div class="modal">
+         {{{addUserLink}}}
+         {{{deleteUserLink}}}
+</div>
+          
+         
+</div>
         </div>
         <div class="messages-list">
-          ${((this.props.messages || []).map((m) => `
+          ${(this.props.messages || [])
+              .map(
+                  (m) => `
             <div class="message-row${m.isMine ? ' mine' : ''}">
               <div class="message-bubble">${m.content}</div>
               <div class="message-time">${m.time ?? ''}</div>
-            </div>`)).join('')}
+            </div>`,
+              )
+              .join('')}
         </div>
         <div class="chat-enter-message"> 
           <div class="chat-download-container"> <img class="chat-download" 
@@ -135,10 +218,14 @@ export class Main extends Block<TProps> {
         </div>
       </div>
       <div class="users-list">
-        ${((this.props.users || []).map((u) => {
-            const avatarSrc = u.avatar ? `https://ya-praktikum.tech/api/v2/resources${u.avatar}` : '/static/download.png';
-            const displayName = u.display_name || `${u.first_name} ${u.second_name}`;
-            return `
+        ${(this.props.users || [])
+            .map((u) => {
+                const avatarSrc = u.avatar
+                    ? `https://ya-praktikum.tech/api/v2/resources${u.avatar}`
+                    : '/static/download.png';
+                const displayName =
+                    u.display_name || `${u.first_name} ${u.second_name}`;
+                return `
           <div class="user-row">
             <img class="user-avatar" src="${avatarSrc}" alt="${displayName}" />
             <div class="user-info">
@@ -146,7 +233,8 @@ export class Main extends Block<TProps> {
               <div class="user-login">@${u.login}</div>
             </div>
           </div>`;
-        })).join('')}
+            })
+            .join('')}
       </div>
 </div>
 

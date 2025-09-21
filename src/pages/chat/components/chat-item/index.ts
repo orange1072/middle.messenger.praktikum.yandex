@@ -26,7 +26,9 @@ export class ChatItem extends Block<TProps> {
             events: {
                 'click:.chat-data': (e: Event) => {
                     const target = e.target as HTMLElement;
-                    const row = target.closest('.chat-row') as HTMLElement | null;
+                    const row = target.closest(
+                        '.chat-row',
+                    ) as HTMLElement | null;
                     if (!row) return;
                     const chatId = Number(row.dataset.chatId);
                     const title = row.dataset.chatTitle || '';

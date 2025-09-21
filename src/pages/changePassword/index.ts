@@ -2,14 +2,33 @@ import { Block } from '../../framework/Block';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Label } from '../../components/label';
-import { Avatar } from '../../components/avatar';
 import { createValidator } from '../../utils/createValidator';
+import { Link } from '../../components/link';
+import { Router } from '../../framework/Router';
 
 export class ChangePassword extends Block {
     constructor() {
-        const avatar = new Avatar({
-            src: 'avatar',
-            attr: { class: 'profile-avatar' },
+        const router = new Router();
+        const backArrowLink = new Link({
+            text: '',
+            hasIcon: true,
+            attr: { class: 'back-arrow' },
+            href: '',
+            events: {
+                click: (e) => {
+                    e.preventDefault();
+                    router.back();
+                },
+            },
+            src: '/static/sendMessage.png',
+            iconClass: 'back-arrow-link',
+            iconStyle: 'width: 40px; height: 40px;',
+        });
+        const changeAvatar = new Link({
+            text: 'Поменять аватар',
+            attr: { class: 'change-avatar-link' },
+            href: '/change-avatar',
+            events: { click: () => router.go('/change-avatar') },
         });
         const oldPasswordInputLabel = new Label({
             text: 'Старый пароль',
@@ -96,7 +115,7 @@ export class ChangePassword extends Block {
         });
 
         super({
-            avatar,
+            changeAvatar,
             oldPasswordInputLabel,
             oldPasswordInput,
             newPasswordInputLabel,
@@ -104,13 +123,17 @@ export class ChangePassword extends Block {
             newPasswordRepeatInputLabel,
             newPasswordRepeatInput,
             submitButton,
+            backArrowLink,
         });
     }
 
     protected render(): string {
         return `
 <div class="change-password-page">
-{{{avatar}}}
+ {{{backArrowLink}}} 
+<div class="flex-container-row">
+<div class="flex-container-col">
+{{{changeAvatar}}}
       <form id="myForm" class="profile-data form-container">
       <div class="profile-row">{{{oldPasswordInputLabel}}}
         {{{oldPasswordInput}}}</div>  
@@ -125,6 +148,10 @@ export class ChangePassword extends Block {
         
       </form>
       </div>
+</div>
+</div>
+
+
     `;
     }
 }
