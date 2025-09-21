@@ -1,6 +1,7 @@
 import { Block } from '../../framework/Block';
 
 type TLinkProps = {
+    id?: string;
     text: string;
     href: string;
     dataPage?: string;
@@ -8,6 +9,10 @@ type TLinkProps = {
         click?: (e: Event) => void;
     };
     attr?: Record<string, string | boolean | number>;
+    hasIcon?: boolean;
+    iconClass?: string;
+    iconStyle?: string;
+    src?: string;
 };
 
 export class Link extends Block<TLinkProps> {
@@ -16,6 +21,13 @@ export class Link extends Block<TLinkProps> {
     }
 
     protected render(): string {
-        return `<a class="{{class}}" id="{{id}}" href="{{href}}" data-page="{{data-page}}">{{text}}</a>`;
+        return `  <a class="{{class}}" id="{{id}}" href="{{href}}" data-page="{{dataPage}}">
+            {{#if hasIcon}}
+                <img src="{{src}}" alt="{{text}}" 
+                     class="link-icon {{#if iconClass}}{{iconClass}}{{/if}}"
+                     {{#if iconStyle}}style="{{iconStyle}}"{{/if}}>
+            {{/if}}
+            {{text}}
+        </a>`;
     }
 }

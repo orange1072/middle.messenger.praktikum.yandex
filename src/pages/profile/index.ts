@@ -1,15 +1,31 @@
 import { Block } from '../../framework/Block';
 import { Link } from '../../components/link';
 import { Avatar } from '../../components/avatar';
-import { mockProfile } from '../../constants';
+import { Router } from '../../framework/Router';
+import { AuthAPI, UserDTO } from '../../api/auth';
 
 export class Profile extends Block {
     constructor() {
+        const router = new Router();
         const profileAvatar = new Avatar({
             src: 'avatar',
             attr: { class: 'profile-avatar' },
         });
-
+        const backArrowLink = new Link({
+            text: '',
+            hasIcon: true,
+            attr: { class: 'back-arrow' },
+            href: '',
+            events: {
+                click: (e) => {
+                    e.preventDefault();
+                    router.back();
+                },
+            },
+            src: '/static/sendMessage.png',
+            iconClass: 'back-arrow-link',
+            iconStyle: 'width: 40px; height: 40px;',
+        });
         const changeDataLink = new Link({
             text: 'Изменить данные',
             dataPage: 'ChangeDataPage',
@@ -23,10 +39,18 @@ export class Profile extends Block {
             href: '/change-password',
             attr: { class: 'change-password' },
         });
+
         const exitLink = new Link({
             text: 'Выйти',
-            dataPage: 'MainContent',
-            href: '/',
+            href: '#',
+            events: {
+                click: async (e: Event) => {
+                    e.preventDefault();
+                    const logout = new AuthAPI().logout();
+                    await logout;
+                    router.go('/');
+                },
+            },
             attr: { class: 'exit-link-red' },
         });
 
@@ -35,15 +59,62 @@ export class Profile extends Block {
             changeDataLink,
             changePasswordLink,
             exitLink,
+            backArrowLink,
+            userData: null,
+            isLoading: true,
         });
     }
+    componentDidMount() {
+        this.fetchUserData();
+    }
+    private async fetchUserData() {
+        try {
+            const authAPI = new AuthAPI();
+            const userData = await authAPI.getUser();
+
+            this.children.profileAvatar.setProps({
+                src: userData.avatar || '',
+            });
+
+            this.setProps({
+                userData,
+                isLoading: false,
+            });
+        } catch (error) {
+            console.error('Ошибка:', error);
+            this.setProps({
+                isLoading: false,
+            });
+        }
+    }
     protected render(): string {
+        const { userData, isLoading } = this.props;
+
+        if (isLoading) {
+            return `<div>Загрузка...</div>`;
+        }
+
+        const profileFields = [
+            { description: 'Имя', data: userData.first_name },
+            { description: 'Фамилия', data: userData.second_name },
+            {
+                description: 'Отображаемое имя',
+                data: userData.display_name || '-',
+            },
+            { description: 'Логин', data: userData.login },
+            { description: 'Email', data: userData.email },
+            { description: 'Телефон', data: userData.phone },
+        ];
         return `
+<div class="flex-container-row">
+{{{backArrowLink}}}
 <div class="profile-page">
+
+
 {{{profileAvatar}}}
 
         <div class="profile-data">
-        ${mockProfile
+        ${profileFields
             .map(
                 (item) => `
         <div class="profile-row">
@@ -62,6 +133,8 @@ export class Profile extends Block {
        <div> {{{exitLink}}}</div>
                </div>
             </div>
+</div>
+
         
     `;
     }
