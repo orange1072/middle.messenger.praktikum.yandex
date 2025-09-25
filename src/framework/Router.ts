@@ -53,13 +53,11 @@ export class Router {
     }
 
     start(): void {
-        window.onpopstate = () => {
+        window.onpopstate = async () => {
             // Обрабатываем переходы через кнопки браузера
             console.log('Browser navigation:', window.location.pathname);
-            // Используем setTimeout для асинхронной обработки
-            setTimeout(() => {
-                this._onRoute(window.location.pathname);
-            }, 0);
+            // Ждем завершения асинхронной обработки
+            await this._onRoute(window.location.pathname);
         };
 
         this._onRoute(window.location.pathname);
@@ -87,12 +85,24 @@ export class Router {
         }
 
         if (this._currentRoute) {
+            console.log('Покидаем текущий роут:', this._currentRoute);
             this._currentRoute.leave();
         }
 
         this._currentRoute = route;
+        console.log('Активируем новый роут:', route);
         route.navigate(pathname);
         console.log('Роут успешно активирован:', pathname);
+        
+        // Проверяем, что DOM обновился
+        setTimeout(() => {
+            const rootElement = document.querySelector(this._rootQuery);
+            if (rootElement && rootElement.children.length === 0) {
+                console.error('DOM не обновился после навигации!');
+            } else {
+                console.log('DOM успешно обновлен');
+            }
+        }, 100);
     }
 
     private async _canActivate(route: Route): Promise<boolean> {
@@ -125,10 +135,7 @@ export class Router {
     go(pathname: string): void {
         console.log('Router.go to:', pathname);
         this.history.pushState({}, '', pathname);
-        // Используем setTimeout для предотвращения проблем с навигацией
-        setTimeout(() => {
-            this._onRoute(pathname);
-        }, 0);
+        this._onRoute(pathname);
     }
 
     getRoute(pathname: string): Route | null {
