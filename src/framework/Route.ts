@@ -83,12 +83,12 @@ export class Route {
     }
 
     leave() {
-        console.log('Route.leave() called for pathname:', this._pathname);
         if (this._block) {
-            console.log('Hiding block for route:', this._pathname);
             this._block.hide();
             // Удаляем блок из DOM при покидании роута
-            const rootElement = document.querySelector(this._props.rootQuery as string);
+            const rootElement = document.querySelector(
+                this._props.rootQuery as string,
+            );
             if (rootElement) {
                 rootElement.innerHTML = '';
             }
@@ -104,18 +104,17 @@ export class Route {
     }
 
     render() {
-        console.log('Route.render() called for pathname:', this._pathname);
         if (!this._block) {
-            console.log('Creating new block for route:', this._pathname);
             // Передаем параметры в компонент
             this._block = new this._blockClass({ params: this._params });
             render(this._props.rootQuery as string, this._block);
         } else {
-            console.log('Re-rendering existing block for route:', this._pathname);
             // Обновляем параметры и перерендериваем блок
             this._block.setProps({ params: this._params });
             // Перерендериваем блок в DOM
-            const rootElement = document.querySelector(this._props.rootQuery as string);
+            const rootElement = document.querySelector(
+                this._props.rootQuery as string,
+            );
             if (rootElement) {
                 rootElement.innerHTML = '';
                 rootElement.appendChild(this._block.getContent());

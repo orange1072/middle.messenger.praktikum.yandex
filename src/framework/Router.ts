@@ -17,7 +17,6 @@ type RouteConfig = {
     redirectIfAuth?: boolean;
 };
 
-
 export class Router {
     static __instance: Router;
 
@@ -54,9 +53,6 @@ export class Router {
 
     start(): void {
         window.onpopstate = async () => {
-            // Обрабатываем переходы через кнопки браузера
-            console.log('Browser navigation:', window.location.pathname);
-            // Ждем завершения асинхронной обработки
             await this._onRoute(window.location.pathname);
         };
 
@@ -70,30 +66,24 @@ export class Router {
 
     private async _onRoute(pathname: string): Promise<void> {
         const route = this.getRoute(pathname);
-        console.log('Переход на:', pathname);
 
         if (!route) {
-            console.log('Роут не найден, редирект на 404');
             this.go('/404');
             return;
         }
 
         const canActivate = await this._canActivate(route);
         if (!canActivate) {
-            console.log('Доступ запрещен для роута:', pathname);
             return;
         }
 
         if (this._currentRoute) {
-            console.log('Покидаем текущий роут:', this._currentRoute);
             this._currentRoute.leave();
         }
 
         this._currentRoute = route;
-        console.log('Активируем новый роут:', route);
         route.navigate(pathname);
-        console.log('Роут успешно активирован:', pathname);
-        
+
         // Проверяем, что DOM обновился
         setTimeout(() => {
             const rootElement = document.querySelector(this._rootQuery);
@@ -133,7 +123,6 @@ export class Router {
     }
 
     go(pathname: string): void {
-        console.log('Router.go to:', pathname);
         this.history.pushState({}, '', pathname);
         this._onRoute(pathname);
     }
