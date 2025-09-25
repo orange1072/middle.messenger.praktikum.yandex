@@ -20,7 +20,7 @@ export default [
         rules: {
             ...tsPlugin.configs.recommended.rules,
             'max-len': ['warn', 110],
-            'max-params': ['error', 3],
+            'max-params': ['error', 4],
             '@typescript-eslint/no-unused-vars': 'error',
         },
     },

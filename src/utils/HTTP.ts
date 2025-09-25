@@ -49,13 +49,15 @@ export class HTTP {
         });
     }
 
-    delete<TResponse>(
+    delete<TRequest extends string | Record<string, unknown>, TResponse>(
         url: string,
+        data?: TRequest,
         options: OptionsWithoutMethod = {},
     ): Promise<TResponse> {
         return this.request<TResponse>(url, {
             ...options,
             method: EMethods.DELETE,
+            data,
         });
     }
 

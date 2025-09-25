@@ -5,9 +5,11 @@ import { Label } from '../../components/label';
 import { createValidator } from '../../utils/createValidator';
 import { Link } from '../../components/link';
 import { Router } from '../../framework/Router';
+import { UsersAPI } from '../../api/users';
 
 export class ChangePassword extends Block {
     constructor() {
+        const changePassword = new UsersAPI();
         const router = new Router();
         const backArrowLink = new Link({
             text: '',
@@ -22,7 +24,7 @@ export class ChangePassword extends Block {
             },
             src: '/static/sendMessage.png',
             iconClass: 'back-arrow-link',
-            iconStyle: 'width: 40px; height: 40px;',
+            iconStyle: 'width: 30px; height: 30px;',
         });
         const changeAvatar = new Link({
             text: 'Поменять аватар',
@@ -39,7 +41,7 @@ export class ChangePassword extends Block {
             id: 'oldPassword',
             placeholder: 'Пароль',
             type: 'password',
-            value: '12345',
+            value: '',
             events: {
                 'blur:input': createValidator('oldPassword'),
             },
@@ -51,7 +53,7 @@ export class ChangePassword extends Block {
         const newPasswordInput = new Input({
             name: 'newPassword',
             id: 'newPassword',
-            value: '12345',
+            value: '',
             placeholder: 'Новый пароль',
             type: 'password',
             events: {
@@ -66,7 +68,7 @@ export class ChangePassword extends Block {
             id: 'passwordRepeat',
             name: 'passwordRepeat',
             placeholder: 'Повторите новый пароль',
-            value: '12345',
+            value: '',
             type: 'password',
         });
 
@@ -74,7 +76,7 @@ export class ChangePassword extends Block {
             text: 'Сохранить',
             type: 'submit',
             events: {
-                click: (e) => {
+                click: async (e) => {
                     e.preventDefault();
 
                     const oldPasswordEl = document.getElementById(
@@ -104,9 +106,19 @@ export class ChangePassword extends Block {
                     } else {
                         console.log('✅ Форма валидна!');
                         const data = {
-                            login: oldPasswordEl?.value,
-                            password: newPasswordEl?.value,
+                            oldPassword: oldPasswordEl?.value,
+                            newPassword: newPasswordEl?.value,
                         };
+                        try {
+                            await changePassword.updatePassword(data);
+                            console.log('✅ Данные успешно обновлены');
+                            router.go('/settings');
+                        } catch (error) {
+                            console.error(
+                                '❌ Ошибка при обновлении данных:',
+                                error,
+                            );
+                        }
                         console.log('📦 Данные формы:', data);
                     }
                 },

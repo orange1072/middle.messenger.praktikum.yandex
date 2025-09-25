@@ -21,28 +21,6 @@ function isArrayOrObject(value: unknown): value is [] | PlainObject {
     return isPlainObject(value) || isArray(value);
 }
 
-export function isEqual(lhs: PlainObject, rhs: PlainObject) {
-    if (Object.keys(lhs).length !== Object.keys(rhs).length) {
-        return false;
-    }
-
-    for (const [key, value] of Object.entries(lhs)) {
-        const rightValue = rhs[key];
-        if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
-            if (isEqual(value, rightValue)) {
-                continue;
-            }
-            return false;
-        }
-
-        if (value !== rightValue) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 export function render(query: string, block: Block) {
     const root = document.querySelector(query);
     if (root) {
@@ -82,14 +60,4 @@ export function queryString(data: PlainObject) {
         .map((arr) => arr.join('='))
         .map((item) => item.toString())
         .join('');
-}
-
-export function queryStringify2(data: Record<string, unknown>): string {
-    const params = Object.entries(data)
-        .map(
-            ([key, value]) =>
-                `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`,
-        )
-        .join(',');
-    return params ? `?${params}` : '';
 }

@@ -7,11 +7,32 @@ import { Link } from '../../components/link';
 import { Router } from '../../framework/Router';
 import { AddUserModal } from '../../components/Modal/components/AddUserModal';
 import { DeleteUserModal } from '../../components/Modal/components/DeleteUserModal';
+import { AddChatModal } from '../../components/Modal/components/AddChatModal';
+import { Input } from '../../components/input';
+import { ChatUserDTO } from '../../api/chats';
+
+type TProps = {
+    userId?: number;
+    chatId?: number;
+    token?: string;
+    selectedChatTitle?: string;
+    defaultBlock?: string;
+    messageInput?: Input;
+    messages?: { content: string; time?: string; isMine?: boolean }[];
+    events?: Record<string, EventListener>;
+    users?: ChatUserDTO[];
+    isChatSelected?: boolean;
+    addChat?: Link;
+    addUserLink?: Link;
+    iconModalLink?: Link;
+    deleteUserLink?: Link;
+};
 
 export class Chat extends Block {
-    constructor() {
-        const main = new Main();
+    constructor(props: TProps) {
+        const main = new Main(props);
         const modalAdd = new AddUserModal();
+        const chatAdd = new AddChatModal();
         const modalDelete = new DeleteUserModal();
         const router = new Router();
         const chatItem = new ChatItem({
@@ -44,6 +65,7 @@ export class Chat extends Block {
             mainHeaderLink,
             modalAdd,
             modalDelete,
+            chatAdd,
         });
     }
 
@@ -52,6 +74,7 @@ export class Chat extends Block {
         <div class="chat-data-container">
         {{{modalAdd}}}
         {{{modalDelete}}}
+        {{{chatAdd}}}
         <div class ="chat-data-container-content">
            {{{mainHeaderLink}}}
         {{{header}}}

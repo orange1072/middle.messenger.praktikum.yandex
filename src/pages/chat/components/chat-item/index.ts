@@ -17,7 +17,7 @@ export class ChatItem extends Block<TProps> {
             src: 'avatar',
             attr: { class: 'chat-row-avatar' },
         });
-        const main = new Main();
+        const main = new Main(props);
         super({
             ...props,
             messageAvatar,

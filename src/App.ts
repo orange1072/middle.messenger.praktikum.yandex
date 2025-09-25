@@ -14,13 +14,19 @@ export default class App {
         const router = new Router('#app');
 
         router
-            .use('/', Login)
-            .use('/sign-up', Registration)
-            .use('/settings', Profile)
-            .use('/change-avatar', ChangeAvatar)
-            .use('/change-data', ChangeData)
-            .use('/change-password', ChangePassword)
-            .use('/messenger', Chat)
+            // Публичные роуты (только для неавторизованных)
+            .use('/', Login, { redirectIfAuth: true })
+            .use('/sign-up', Registration, { redirectIfAuth: true })
+
+            // Защищенные роуты (требуют авторизации)
+            .use('/settings', Profile, { requiresAuth: true })
+            .use('/change-avatar', ChangeAvatar, { requiresAuth: true })
+            .use('/change-data', ChangeData, { requiresAuth: true })
+            .use('/change-password', ChangePassword, { requiresAuth: true })
+            .use('/messenger', Chat, { requiresAuth: true })
+            .use('/chats/:tokenValue/:chatId', Chat, { requiresAuth: true })
+
+            // Публичные ошибки
             .use('/500', Error500)
             .use('/404', Error404);
 

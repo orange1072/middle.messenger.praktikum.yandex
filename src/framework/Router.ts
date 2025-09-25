@@ -1,8 +1,26 @@
 import { Block } from './Block';
 import { Route } from './Route';
+import { AuthService } from '../utils/AuthService';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type BlockConstructor = new (propsAndChildren?: any) => Block<any>;
+// Базовый интерфейс для пропсов Block
+interface BlockProps {
+    [key: string]: unknown;
+}
+
+// Обобщенный тип для конструктора Block
+type BlockConstructor<P extends BlockProps = BlockProps> = new (
+    propsAndChildren?: P,
+) => Block<P>;
+
+type RouteConfig = {
+    requiresAuth?: boolean;
+    redirectIfAuth?: boolean;
+};
+
+// Интерфейс для опций Route
+interface RouteOptions {
+    rootQuery: string;
+}
 
 export class Router {
     static __instance: Router;
@@ -10,7 +28,7 @@ export class Router {
     private routes: Route[] = [];
     private history: History = window.history;
     private _currentRoute: Route | null = null;
-    private _rootQuery!: string;
+    private _rootQuery: string;
 
     constructor(rootQuery = '#app') {
         if (Router.__instance) {
@@ -21,15 +39,24 @@ export class Router {
         Router.__instance = this;
     }
 
-    use(pathname: string, block: BlockConstructor): Router {
-        const route = new Route(pathname, block, {
-            rootQuery: this._rootQuery,
-        });
+    use<P extends BlockProps>(
+        pathname: string,
+        block: BlockConstructor<P>,
+        config: RouteConfig = {},
+    ): Router {
+        const route = new Route(
+            pathname,
+            block,
+            {
+                rootQuery: this._rootQuery,
+            } as RouteOptions,
+            config,
+        );
         this.routes.push(route);
         return this;
     }
 
-    start() {
+    start(): void {
         window.onpopstate = () => {
             this._onRoute(window.location.pathname);
         };
@@ -37,11 +64,23 @@ export class Router {
         this._onRoute(window.location.pathname);
     }
 
-    private _onRoute(pathname: string) {
+    public updateAuthStatus(): void {
+        const currentPath = window.location.pathname;
+        this._onRoute(currentPath);
+    }
+
+    private _onRoute(pathname: string): void {
         const route = this.getRoute(pathname);
+        console.log('Переход на:', pathname);
 
         if (!route) {
-            this.go('/404'); // fallback
+            console.log('Роут не найден, редирект на 404');
+            this.go('/404');
+            return;
+        }
+
+        if (!this._canActivate(route)) {
+            console.log('Доступ запрещен для роута:', pathname);
             return;
         }
 
@@ -50,10 +89,32 @@ export class Router {
         }
 
         this._currentRoute = route;
-        route.render();
+        route.navigate(pathname);
+        console.log('Роут успешно активирован:', pathname);
     }
 
-    go(pathname: string) {
+    private _canActivate(route: Route): boolean {
+        if (!route.canActivate()) {
+            const config = route.getConfig();
+
+            if (config.requiresAuth && !AuthService.isAuthenticated()) {
+                this.go('/');
+                return false;
+            }
+
+            if (config.redirectIfAuth && AuthService.isAuthenticated()) {
+                this.go('/messenger');
+                return false;
+            }
+
+            this.go('/404');
+            return false;
+        }
+
+        return true;
+    }
+
+    go(pathname: string): void {
         this.history.pushState({}, '', pathname);
         this._onRoute(pathname);
     }
@@ -62,11 +123,15 @@ export class Router {
         return this.routes.find((route) => route.match(pathname)) || null;
     }
 
-    back() {
+    getCurrentParams(): Record<string, string> {
+        return this._currentRoute?.getParams() || {};
+    }
+
+    back(): void {
         this.history.back();
     }
 
-    forward() {
+    forward(): void {
         this.history.forward();
     }
 }

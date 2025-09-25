@@ -1,4 +1,4 @@
-@import "global.pcss";
+@import url("global.pcss");
 
 .main-chat-header {
     height: 56px;
@@ -8,6 +8,7 @@
     border-bottom: 1px solid #EAEAEA;
     padding: 0 20px;
     background: #FBFBFB;
+    visibility: hidden;
 }
 
 .chat-companion {
@@ -27,6 +28,7 @@
     align-items: center;
     visibility: hidden;
 }
+
 .modal{
     border-radius: 21px;
     background-color: white;
@@ -39,8 +41,9 @@
     position: relative;
     align-items: flex-start;
     justify-content: space-around;
-
+z-index: 2;
 }
+
 .icon-modal-open{
     position: relative;
     left: 60%;
@@ -161,7 +164,15 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: #F5F5F5;
+    height: 735px;
+    overflow: scroll;
+}
+
+.block-without-chat{
+    position: absolute;
+    top: 33%;
+    left: 55%;
+    z-index: 5;
 }
 
 .chat-data-message-container {
@@ -223,6 +234,7 @@
     outline: none;
     background-color: #EFEFEF;
 }
+
 .chat-message>input {
     background-color: transparent;
     text-align: left;
@@ -230,13 +242,17 @@
 }
 
 .chat-enter-message {
+    top: 71%;
+    position: absolute;
     border-radius: 12px;
     display: flex;
-    width: 100%;
+    width: 910px;
     padding: 10px 5px;
     gap: 10px;
     flex-direction: row;
-    align-items: center
+    align-items: center;
+    visibility: hidden;
+    left: 33%;
 }
 
 .chat-sendmsg-container, .chat-download-container {
@@ -246,9 +262,11 @@
     justify-content: flex-start;
     cursor: pointer;
 }
+
 .chat-download-container{
     justify-content: end;
 }
+
 /* Messages styling */
 .messages-list {
     flex: 1;
@@ -257,6 +275,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 50px;
 }
 
 .message-row {
@@ -276,6 +295,7 @@
     border-radius: 12px;
     padding: 11px;
     position: relative;
+    background: var(--secondary-bg-color);
 }
 
 .message-row.mine .message-bubble {

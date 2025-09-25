@@ -6,6 +6,7 @@ import { Label } from '../../components/label';
 import { createValidator } from '../../utils/createValidator';
 import { AuthAPI } from '../../api/auth';
 import { Router } from '../../framework/Router';
+import { AuthService } from '../../utils/AuthService';
 
 export class Login extends Block {
     constructor() {
@@ -81,10 +82,17 @@ export class Login extends Block {
                             password: passwordEl?.value,
                         };
                         try {
-                            await auth.signin(data);
-                            router.go('/messenger');
+                            const response = await auth.signin(data);
+
+                            if (response) {
+                                AuthService.setToken(response);
+                                console.log('getToken', AuthService.getToken());
+                                setTimeout(() => {
+                                    router.go('/messenger');
+                                }, 1000);
+                            }
                         } catch (error) {
-                            console.error('❌ Ошибка регистрации:', error);
+                            console.error('❌ Ошибка авторизации:', error);
                         }
                         console.log('📦 Данные формы:', data);
                     }

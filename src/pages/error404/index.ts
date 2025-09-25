@@ -13,7 +13,7 @@ export class Error404 extends Block {
             events: {
                 click: (e: Event) => {
                     e.preventDefault();
-                    router.go('/login');
+                    router.go('/messenger');
                 },
             },
         });
