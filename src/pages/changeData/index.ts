@@ -8,6 +8,7 @@ import { Link } from '../../components/link';
 import { Router } from '../../framework/Router';
 import { UsersAPI } from '../../api/users';
 import { AuthAPI, UserDTO } from '../../api/auth';
+import { CONFIG } from '../../config';
 
 // Интерфейс для дочерних компонентов
 type ChangeDataProps = {
@@ -89,7 +90,7 @@ export class ChangeData extends Block<ChangeDataProps> {
                     router.back();
                 },
             },
-            src: 'src/static/sendMessage.png',
+            src: `${CONFIG.STATIC_BASE_URL}/sendMessage.png`,
             iconClass: 'back-arrow-link',
             iconStyle: 'width: 30px; height: 30px;',
         });

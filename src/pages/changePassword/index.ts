@@ -6,6 +6,7 @@ import { createValidator } from '../../utils/createValidator';
 import { Link } from '../../components/link';
 import { Router } from '../../framework/Router';
 import { UsersAPI } from '../../api/users';
+import { CONFIG } from '../../config';
 
 export class ChangePassword extends Block {
     constructor() {
@@ -22,7 +23,7 @@ export class ChangePassword extends Block {
                     router.back();
                 },
             },
-            src: 'src/static/sendMessage.png',
+            src: `${CONFIG.STATIC_BASE_URL}/sendMessage.png`,
             iconClass: 'back-arrow-link',
             iconStyle: 'width: 30px; height: 30px;',
         });

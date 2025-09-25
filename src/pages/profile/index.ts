@@ -4,6 +4,7 @@ import { Avatar } from '../../components/avatar';
 import { Router } from '../../framework/Router';
 import { AuthAPI, UserDTO } from '../../api/auth';
 import { AuthService } from '../../utils/AuthService';
+import { CONFIG } from '../../config';
 
 // Интерфейс для полей профиля
 interface ProfileField {
@@ -44,7 +45,7 @@ export class Profile extends Block<ProfileProps> {
                     router.back();
                 },
             },
-            src: 'src/static/sendMessage.png',
+            src: `${CONFIG.STATIC_BASE_URL}/sendMessage.png`,
             iconClass: 'back-arrow-link',
             iconStyle: 'width: 30px; height: 30px;',
         });

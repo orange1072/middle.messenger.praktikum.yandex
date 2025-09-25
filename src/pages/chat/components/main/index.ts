@@ -5,6 +5,7 @@ import { ChatSocket } from '../../../../utils/socket';
 import { Link } from '../../../../components/link';
 import { AuthAPI } from '../../../../api/auth';
 import { store } from '../../../../store';
+import { CONFIG } from '../../../../config';
 
 type TProps = {
     userId?: number;
@@ -41,7 +42,7 @@ export class Main extends Block<TProps> {
                     }
                 },
             },
-            src: '../../../../src/static/Ellipse%2031.png',
+            src: `${CONFIG.STATIC_BASE_URL}/Ellipse%2031.png`,
             iconClass: 'modal-icon-size',
             iconStyle: 'width: 22px; height: 22px;',
         });
@@ -59,7 +60,7 @@ export class Main extends Block<TProps> {
                     }
                 },
             },
-            src: '../../../../src/static/add.png',
+            src: `${CONFIG.STATIC_BASE_URL}/add.png`,
             iconClass: 'modal-icon-size',
             iconStyle: 'width: 22px; height: 22px;',
         });
@@ -77,7 +78,7 @@ export class Main extends Block<TProps> {
                     }
                 },
             },
-            src: '../../../../src/static/delete.png',
+            src: `${CONFIG.STATIC_BASE_URL}/delete.png`,
             iconClass: 'modal-icon-size',
             iconStyle: 'width: 22px; height: 22px;',
         });
@@ -95,7 +96,7 @@ export class Main extends Block<TProps> {
                     }
                 },
             },
-            src: '../../../../src/static/chat.png',
+            src: `${CONFIG.STATIC_BASE_URL}/chat.png`,
             iconClass: 'modal-icon-size',
             iconStyle: 'width: 22px; height: 22px;',
         });
@@ -396,11 +397,13 @@ export class Main extends Block<TProps> {
             
             <div id="chatEnterMessage" class="chat-enter-message active">
                 <div class="chat-download-container">
-                    <img class="chat-download" src="/src/static/download.png" alt="sendMessage">
+                    <img class="chat-download" src="${CONFIG.STATIC_BASE_URL}/download.png" alt="sendMessage">
                 </div>
                 <div class="chat-message-container">{{{messageInput}}}</div>
                 <div class="chat-sendmsg-container">
-                    <img class="chat-sendmsg" src="/src/static/sendMessage.png" alt="sendMessage">
+                    <img class="chat-sendmsg" 
+                         src="${CONFIG.STATIC_BASE_URL}/sendMessage.png" 
+                         alt="sendMessage">
                 </div>
             </div>
         </div>

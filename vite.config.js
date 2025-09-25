@@ -8,8 +8,13 @@ export default defineConfig({
                 main: resolve(__dirname, './index.html'),
             },
         },
+        copyPublicDir: true,
     },
+    publicDir: 'src',
     css: {
         postcss: './postcss.config.js',
+    },
+    server: {
+        historyApiFallback: true,
     },
 });

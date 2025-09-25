@@ -55,7 +55,11 @@ export class Router {
     start(): void {
         window.onpopstate = () => {
             // Обрабатываем переходы через кнопки браузера
-            this._onRoute(window.location.pathname);
+            console.log('Browser navigation:', window.location.pathname);
+            // Используем setTimeout для асинхронной обработки
+            setTimeout(() => {
+                this._onRoute(window.location.pathname);
+            }, 0);
         };
 
         this._onRoute(window.location.pathname);
@@ -119,8 +123,12 @@ export class Router {
     }
 
     go(pathname: string): void {
+        console.log('Router.go to:', pathname);
         this.history.pushState({}, '', pathname);
-        this._onRoute(pathname);
+        // Используем setTimeout для предотвращения проблем с навигацией
+        setTimeout(() => {
+            this._onRoute(pathname);
+        }, 0);
     }
 
     getRoute(pathname: string): Route | null {
