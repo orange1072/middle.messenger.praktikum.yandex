@@ -266,13 +266,15 @@ export class Block<TProps extends BlockProps = BlockProps> {
 
     show(): void {
         if (this._element) {
-            this._element.style.display = 'flex';
+            this._element.style.display = '';
+            this._element.style.visibility = 'visible';
         }
     }
 
     hide(): void {
         if (this._element) {
             this._element.style.display = 'none';
+            this._element.style.visibility = 'hidden';
         }
     }
 }

@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "prebuild": "tsc --noEmit",
-    "start": "vite build && node server.mjs",
+    "start": "npm run build && npm run preview",
     "build": "vite build",
     "preview": "vite preview",
     "eslint": "eslint \"src/**/*.[jt]s\"",

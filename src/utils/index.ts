@@ -24,9 +24,12 @@ function isArrayOrObject(value: unknown): value is [] | PlainObject {
 export function render(query: string, block: Block) {
     const root = document.querySelector(query);
     if (root) {
+        console.log('Rendering block to:', query);
         root.innerHTML = '';
         root.appendChild(block.getContent());
         block.dispatchComponentDidMount();
+    } else {
+        console.error('Root element not found:', query);
     }
 }
 
