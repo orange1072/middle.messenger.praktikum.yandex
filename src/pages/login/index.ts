@@ -85,14 +85,26 @@ export class Login extends Block {
                             const response = await auth.signin(data);
 
                             if (response) {
-                                AuthService.setToken(response);
-                                console.log('getToken', AuthService.getToken());
+                                // Получаем информацию о пользователе после успешной авторизации
+                                const user = await auth.getUser();
+                                AuthService.setAuthenticated(user);
+                                console.log('✅ Авторизация успешна');
                                 setTimeout(() => {
                                     router.go('/messenger');
                                 }, 1000);
                             }
                         } catch (error) {
                             console.error('❌ Ошибка авторизации:', error);
+                            // Проверяем, не авторизован ли уже пользователь
+                            if (error instanceof Error && error.message.includes('User already in system')) {
+                                try {
+                                    const user = await auth.getUser();
+                                    AuthService.setAuthenticated(user);
+                                    router.go('/messenger');
+                                } catch (getUserError) {
+                                    console.error('❌ Ошибка получения пользователя:', getUserError);
+                                }
+                            }
                         }
                         console.log('📦 Данные формы:', data);
                     }

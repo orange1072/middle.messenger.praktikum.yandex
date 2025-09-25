@@ -44,7 +44,7 @@ export class Profile extends Block<ProfileProps> {
                     router.back();
                 },
             },
-            src: '/static/sendMessage.png',
+            src: 'src/static/sendMessage.png',
             iconClass: 'back-arrow-link',
             iconStyle: 'width: 30px; height: 30px;',
         });
@@ -70,9 +70,9 @@ export class Profile extends Block<ProfileProps> {
                 click: async (e: Event) => {
                     e.preventDefault();
 
-                    AuthService.logout();
+                    await AuthService.logout();
                     const refresh: Router = new Router();
-                    refresh.updateAuthStatus();
+                    await refresh.updateAuthStatus();
                     router.go('/');
                 },
             },

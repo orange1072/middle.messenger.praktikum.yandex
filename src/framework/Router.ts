@@ -54,18 +54,19 @@ export class Router {
 
     start(): void {
         window.onpopstate = () => {
+            // Обрабатываем переходы через кнопки браузера
             this._onRoute(window.location.pathname);
         };
 
         this._onRoute(window.location.pathname);
     }
 
-    public updateAuthStatus(): void {
+    public async updateAuthStatus(): Promise<void> {
         const currentPath = window.location.pathname;
-        this._onRoute(currentPath);
+        await this._onRoute(currentPath);
     }
 
-    private _onRoute(pathname: string): void {
+    private async _onRoute(pathname: string): Promise<void> {
         const route = this.getRoute(pathname);
         console.log('Переход на:', pathname);
 
@@ -75,7 +76,8 @@ export class Router {
             return;
         }
 
-        if (!this._canActivate(route)) {
+        const canActivate = await this._canActivate(route);
+        if (!canActivate) {
             console.log('Доступ запрещен для роута:', pathname);
             return;
         }
@@ -89,18 +91,24 @@ export class Router {
         console.log('Роут успешно активирован:', pathname);
     }
 
-    private _canActivate(route: Route): boolean {
+    private async _canActivate(route: Route): Promise<boolean> {
         if (!route.canActivate()) {
             const config = route.getConfig();
 
-            if (config.requiresAuth && !AuthService.isAuthenticated()) {
-                this.go('/');
-                return false;
+            if (config.requiresAuth) {
+                const isAuth = await AuthService.checkAuth();
+                if (!isAuth) {
+                    this.go('/');
+                    return false;
+                }
             }
 
-            if (config.redirectIfAuth && AuthService.isAuthenticated()) {
-                this.go('/messenger');
-                return false;
+            if (config.redirectIfAuth) {
+                const isAuth = await AuthService.checkAuth();
+                if (isAuth) {
+                    this.go('/messenger');
+                    return false;
+                }
             }
 
             this.go('/404');

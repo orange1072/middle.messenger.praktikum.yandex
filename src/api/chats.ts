@@ -1,7 +1,6 @@
 import { HTTP } from '../utils/HTTP';
 import { BaseAPI } from '../utils/BaseApi';
-
-const API_ROOT = 'https://ya-praktikum.tech/api/v2';
+import { CONFIG } from '../config';
 const http = new HTTP();
 export type ChatDTO = { id: number; title: string };
 export type ChatUserDTO = {
@@ -16,39 +15,38 @@ export type ChatUserDTO = {
 
 export class ChatsAPI extends BaseAPI {
     public list() {
-        return http.get<ChatDTO[]>(`${API_ROOT}/chats`);
+        return http.get<ChatDTO[]>(`${CONFIG.API_BASE_URL}/chats`);
     }
 
     public create(title: string) {
         return http.post<{ title: string }, { id: number }>(
-            `${API_ROOT}/chats`,
+            `${CONFIG.API_BASE_URL}/chats`,
             { title },
         );
     }
 
     public addUser(chatId: number, userId: number) {
         return http.put<Record<string, unknown>, string>(
-            `${API_ROOT}/chats/users`,
+            `${CONFIG.API_BASE_URL}/chats/users`,
             { users: [userId], chatId },
         );
     }
 
     public removeUser(chatId: number, userId: number) {
         return http.delete<Record<string, unknown>, string>(
-            // `${API_ROOT}/chats/users?chatId=${chatId}&users=[${userId}]`,
-            `${API_ROOT}/chats/users`,
+            `${CONFIG.API_BASE_URL}/chats/users`,
             { users: [userId], chatId },
         );
     }
 
     public getToken(chatId: number) {
         return http.post<Record<string, never>, { token: string }>(
-            `${API_ROOT}/chats/token/${chatId}`,
+            `${CONFIG.API_BASE_URL}/chats/token/${chatId}`,
             {},
         );
     }
 
     public getUsers(chatId: number) {
-        return http.get<ChatUserDTO[]>(`${API_ROOT}/chats/${chatId}/users`);
+        return http.get<ChatUserDTO[]>(`${CONFIG.API_BASE_URL}/chats/${chatId}/users`);
     }
 }

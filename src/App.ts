@@ -8,9 +8,17 @@ import { Profile } from './pages/profile';
 import { ChangePassword } from './pages/changePassword';
 import { Chat } from './pages/chat';
 import { Router } from './framework/Router';
+import { AuthService } from './utils/AuthService';
 
 export default class App {
     constructor() {
+        this.init();
+    }
+
+    private async init(): Promise<void> {
+        // Инициализируем проверку авторизации
+        await AuthService.checkAuth();
+
         const router = new Router('#app');
 
         router

@@ -89,7 +89,7 @@ export class ChangeData extends Block<ChangeDataProps> {
                     router.back();
                 },
             },
-            src: '/static/sendMessage.png',
+            src: 'src/static/sendMessage.png',
             iconClass: 'back-arrow-link',
             iconStyle: 'width: 30px; height: 30px;',
         });
@@ -321,11 +321,11 @@ export class ChangeData extends Block<ChangeDataProps> {
         // Подписка на события будет обработана в _componentDidUpdate
     }
 
-    protected componentDidUpdate(oldProps: ChangeDataProps, newProps: ChangeDataProps): boolean {
-        if (
-            newProps.userData &&
-            newProps.userData !== oldProps.userData
-        ) {
+    protected componentDidUpdate(
+        oldProps: ChangeDataProps,
+        newProps: ChangeDataProps,
+    ): boolean {
+        if (newProps.userData && newProps.userData !== oldProps.userData) {
             this.updateInputValues(newProps.userData);
         }
         return true;

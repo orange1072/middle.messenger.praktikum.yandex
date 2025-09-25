@@ -1,7 +1,6 @@
 import { HTTP } from '../utils/HTTP';
 import { BaseAPI } from '../utils/BaseApi';
-
-const API_ROOT = 'https://ya-praktikum.tech/api/v2';
+import { CONFIG } from '../config';
 const http = new HTTP();
 
 export type SigninRequest = {
@@ -32,23 +31,23 @@ export type UserDTO = {
 export class AuthAPI extends BaseAPI {
     public signup(data: SignupRequest) {
         return http.post<SignupRequest, { id: number }>(
-            `${API_ROOT}/auth/signup`,
+            `${CONFIG.API_BASE_URL}/auth/signup`,
             data,
         );
     }
 
     public signin(data: SigninRequest) {
         return http.post<SigninRequest, string>(
-            `${API_ROOT}/auth/signin`,
+            `${CONFIG.API_BASE_URL}/auth/signin`,
             data,
         );
     }
 
     public getUser() {
-        return http.get<UserDTO>(`${API_ROOT}/auth/user`);
+        return http.get<UserDTO>(`${CONFIG.API_BASE_URL}/auth/user`);
     }
 
     public logout() {
-        return http.post(`${API_ROOT}/auth/logout`);
+        return http.post(`${CONFIG.API_BASE_URL}/auth/logout`);
     }
 }

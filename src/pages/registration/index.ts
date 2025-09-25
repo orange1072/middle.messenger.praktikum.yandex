@@ -6,6 +6,7 @@ import { Label } from '../../components/label';
 import { createValidator } from '../../utils/createValidator';
 import { AuthAPI } from '../../api/auth';
 import { Router } from '../../framework/Router';
+import { AuthService } from '../../utils/AuthService';
 
 export class Registration extends Block {
     constructor() {
@@ -200,7 +201,16 @@ export class Registration extends Block {
                                 login: data.login,
                                 email: data.email,
                             });
-                            router.go('/messenger');
+                            
+                            // После успешной регистрации авторизуем пользователя
+                            try {
+                                const user = await auth.getUser();
+                                AuthService.setAuthenticated(user);
+                                router.go('/messenger');
+                            } catch (error) {
+                                console.error('❌ Ошибка авторизации после регистрации:', error);
+                                router.go('/');
+                            }
                             console.log('📦 Данные формы:', data);
                         }
                     }

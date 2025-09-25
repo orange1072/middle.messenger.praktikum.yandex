@@ -22,7 +22,7 @@ export class ChangePassword extends Block {
                     router.back();
                 },
             },
-            src: '/static/sendMessage.png',
+            src: 'src/static/sendMessage.png',
             iconClass: 'back-arrow-link',
             iconStyle: 'width: 30px; height: 30px;',
         });

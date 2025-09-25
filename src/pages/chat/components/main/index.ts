@@ -41,7 +41,7 @@ export class Main extends Block<TProps> {
                     }
                 },
             },
-            src: '../../../../../static/Ellipse%2031.png',
+            src: '../../../../src/static/Ellipse%2031.png',
             iconClass: 'modal-icon-size',
             iconStyle: 'width: 22px; height: 22px;',
         });
@@ -59,7 +59,7 @@ export class Main extends Block<TProps> {
                     }
                 },
             },
-            src: '../../../../../static/add.png',
+            src: '../../../../src/static/add.png',
             iconClass: 'modal-icon-size',
             iconStyle: 'width: 22px; height: 22px;',
         });
@@ -77,7 +77,7 @@ export class Main extends Block<TProps> {
                     }
                 },
             },
-            src: '../../../../../static/delete.png',
+            src: '../../../../src/static/delete.png',
             iconClass: 'modal-icon-size',
             iconStyle: 'width: 22px; height: 22px;',
         });
@@ -95,7 +95,7 @@ export class Main extends Block<TProps> {
                     }
                 },
             },
-            src: '../../../../../static/chat.png',
+            src: '../../../../src/static/chat.png',
             iconClass: 'modal-icon-size',
             iconStyle: 'width: 22px; height: 22px;',
         });
@@ -284,7 +284,12 @@ export class Main extends Block<TProps> {
             return;
         }
 
-        const appendMessage = (msg: { type?: string; content?: string; time?: string; user_id?: number }) => {
+        const appendMessage = (msg: {
+            type?: string;
+            content?: string;
+            time?: string;
+            user_id?: number;
+        }) => {
             if (msg.type !== 'message' || !msg.content) return;
 
             const newMessage = {
@@ -321,7 +326,14 @@ export class Main extends Block<TProps> {
 
             this.setProps({ messages: nextMessages });
         } else {
-            appendMessage(payload as { type?: string; content?: string; time?: string; user_id?: number });
+            appendMessage(
+                payload as {
+                    type?: string;
+                    content?: string;
+                    time?: string;
+                    user_id?: number;
+                },
+            );
         }
     }
 
@@ -384,11 +396,11 @@ export class Main extends Block<TProps> {
             
             <div id="chatEnterMessage" class="chat-enter-message active">
                 <div class="chat-download-container">
-                    <img class="chat-download" src="/static/download.png" alt="sendMessage">
+                    <img class="chat-download" src="/src/static/download.png" alt="sendMessage">
                 </div>
                 <div class="chat-message-container">{{{messageInput}}}</div>
                 <div class="chat-sendmsg-container">
-                    <img class="chat-sendmsg" src="/static/sendMessage.png" alt="sendMessage">
+                    <img class="chat-sendmsg" src="/src/static/sendMessage.png" alt="sendMessage">
                 </div>
             </div>
         </div>

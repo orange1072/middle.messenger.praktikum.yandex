@@ -1,3 +1,5 @@
+import { CONFIG } from '../config';
+
 type Message = { content: string; type: 'message'; time?: string };
 
 export type SocketHandlers = {
@@ -19,7 +21,7 @@ export class ChatSocket {
     ) {}
 
     public connect() {
-        const url = `wss://ya-praktikum.tech/ws/chats/${this.userId}/${this.chatId}/${this.token}`;
+        const url = `${CONFIG.WS_BASE_URL}/chats/${this.userId}/${this.chatId}/${this.token}`;
         this.socket = new WebSocket(url);
 
         this.socket.addEventListener('open', () => {
