@@ -25,7 +25,7 @@ export class AddChatModal extends Block {
                     console.log('click');
                     e.preventDefault();
                     const chatNameInput: HTMLInputElement =
-                        document.getElementById('chatNameInput');
+                        document.getElementById('chatNameInput') as HTMLInputElement;
                     const title = chatNameInput?.value;
                     try {
                         await createChatApi.create(title);

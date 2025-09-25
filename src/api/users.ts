@@ -1,7 +1,6 @@
 import { HTTP } from '../utils/HTTP';
 import { BaseAPI } from '../utils/BaseApi';
 import { UserDTO } from './auth';
-import { data } from 'autoprefixer';
 
 const API_ROOT = 'https://ya-praktikum.tech/api/v2';
 const http = new HTTP();
@@ -18,9 +17,9 @@ export class UsersAPI extends BaseAPI {
     }
 
     public updateAvatar(data: FormData) {
-        return http.put<FormData, Record<string, unknown>>(
+        return http.put<Record<string, unknown>, Record<string, unknown>>(
             `${API_ROOT}/user/profile/avatar`,
-            data,
+            data as unknown as Record<string, unknown>,
         );
     }
 

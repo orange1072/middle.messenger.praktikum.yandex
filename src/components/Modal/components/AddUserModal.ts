@@ -35,7 +35,7 @@ export class AddUserModal extends Block<AddUserModalProps> {
         const usersAPI = new UsersAPI();
 
         // Получаем текущий чат из store
-        const currentChat: Chat | undefined = store.getCurrentChat();
+        const currentChat: Chat | undefined = store.getCurrentChat() as Chat | undefined;
         const currentChatId = currentChat?.id ? Number(currentChat.id) : 0;
 
         const textBlock = new Text({

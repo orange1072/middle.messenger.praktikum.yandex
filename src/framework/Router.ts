@@ -17,10 +17,6 @@ type RouteConfig = {
     redirectIfAuth?: boolean;
 };
 
-// Интерфейс для опций Route
-interface RouteOptions {
-    rootQuery: string;
-}
 
 export class Router {
     static __instance: Router;
@@ -28,7 +24,7 @@ export class Router {
     private routes: Route[] = [];
     private history: History = window.history;
     private _currentRoute: Route | null = null;
-    private _rootQuery: string;
+    private _rootQuery: string = '';
 
     constructor(rootQuery = '#app') {
         if (Router.__instance) {
@@ -46,10 +42,10 @@ export class Router {
     ): Router {
         const route = new Route(
             pathname,
-            block,
+            block as new (propsAndChildren?: unknown) => Block<never>,
             {
                 rootQuery: this._rootQuery,
-            } as RouteOptions,
+            } as Record<string, unknown>,
             config,
         );
         this.routes.push(route);

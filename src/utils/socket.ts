@@ -79,7 +79,7 @@ function safeParse(data: unknown): unknown {
     if (typeof data === 'string') {
         try {
             return JSON.parse(data);
-        } catch (_) {
+        } catch {
             return data;
         }
     }

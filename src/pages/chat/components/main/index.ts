@@ -3,7 +3,6 @@ import { Input } from '../../../../components/input';
 import { ChatsAPI, ChatUserDTO } from '../../../../api/chats';
 import { ChatSocket } from '../../../../utils/socket';
 import { Link } from '../../../../components/link';
-import { Router } from '../../../../framework/Router';
 import { AuthAPI } from '../../../../api/auth';
 import { store } from '../../../../store';
 
@@ -134,7 +133,7 @@ export class Main extends Block<TProps> {
             users: [],
         });
 
-        this.router = new Router();
+        // Router будет создан при необходимости
     }
 
     protected componentDidMount(): void {
@@ -198,7 +197,7 @@ export class Main extends Block<TProps> {
             console.error('Error selecting chat:', error);
         }
     }
-    protected componentDidUpdate(oldProps: TProps, newProps: TProps): boolean {
+    protected componentDidUpdate(_oldProps: TProps, newProps: TProps): boolean {
         // Создаем WebSocket соединение когда есть все необходимые данные
         if (
             newProps.userId &&
@@ -278,13 +277,14 @@ export class Main extends Block<TProps> {
         this.setProps({ messages: nextMessages });
     }
 
-    private handleIncoming(payload: any): void {
+    private handleIncoming(payload: unknown): void {
+        const payloadData = payload as { type?: string };
         // Игнорируем ping/pong сообщения
-        if (payload?.type === 'pong' || payload?.type === 'ping') {
+        if (payloadData?.type === 'pong' || payloadData?.type === 'ping') {
             return;
         }
 
-        const appendMessage = (msg: any) => {
+        const appendMessage = (msg: { type?: string; content?: string; time?: string; user_id?: number }) => {
             if (msg.type !== 'message' || !msg.content) return;
 
             const newMessage = {
@@ -321,7 +321,7 @@ export class Main extends Block<TProps> {
 
             this.setProps({ messages: nextMessages });
         } else {
-            appendMessage(payload);
+            appendMessage(payload as { type?: string; content?: string; time?: string; user_id?: number });
         }
     }
 

@@ -51,7 +51,7 @@ export class ChangeData extends Block<ChangeDataProps> {
             const authAPI = new AuthAPI();
             const userData = await authAPI.getUser();
 
-            this.userData = userData;
+            this.setProps({ userData });
 
             if (this.children.profileAvatar) {
                 this.children.profileAvatar.setProps({
@@ -72,16 +72,6 @@ export class ChangeData extends Block<ChangeDataProps> {
     }
 
     constructor() {
-        const props: ChangeDataProps = {
-            userData: undefined,
-            isLoading: true,
-        };
-
-        super(props);
-
-        const changeData = new UsersAPI();
-        const router = new Router();
-
         const avatar = new Avatar({
             src: '',
             attr: { class: 'profile-avatar' },
@@ -95,6 +85,7 @@ export class ChangeData extends Block<ChangeDataProps> {
             events: {
                 click: (e: Event) => {
                     e.preventDefault();
+                    const router = new Router();
                     router.back();
                 },
             },
@@ -110,6 +101,7 @@ export class ChangeData extends Block<ChangeDataProps> {
             events: {
                 click: (e: Event) => {
                     e.preventDefault();
+                    const router = new Router();
                     router.go('/change-avatar');
                 },
             },
@@ -287,8 +279,10 @@ export class ChangeData extends Block<ChangeDataProps> {
                     };
 
                     try {
+                        const changeData = new UsersAPI();
                         await changeData.updateProfile(data);
                         console.log('✅ Данные успешно обновлены');
+                        const router = new Router();
                         router.go('/settings');
                     } catch (error) {
                         console.error(
@@ -301,7 +295,9 @@ export class ChangeData extends Block<ChangeDataProps> {
             attr: { class: 'btn btn-primary btn-save' },
         });
 
-        this.children = {
+        const props: ChangeDataProps = {
+            userData: undefined,
+            isLoading: true,
             avatar,
             loginInputLabel,
             firstNameInputLabel,
@@ -320,23 +316,25 @@ export class ChangeData extends Block<ChangeDataProps> {
             changeAvatar,
         };
 
-        this.eventBus().on(
-            Block.EVENTS.FLOW_CDU,
-            (oldProps: ChangeDataProps, newProps: ChangeDataProps) => {
-                if (
-                    newProps.userData &&
-                    newProps.userData !== oldProps.userData
-                ) {
-                    this.updateInputValues(newProps.userData);
-                }
-            },
-        );
+        super(props);
+
+        // Подписка на события будет обработана в _componentDidUpdate
+    }
+
+    protected componentDidUpdate(oldProps: ChangeDataProps, newProps: ChangeDataProps): boolean {
+        if (
+            newProps.userData &&
+            newProps.userData !== oldProps.userData
+        ) {
+            this.updateInputValues(newProps.userData);
+        }
+        return true;
     }
 
     private updateInputValues(userData: UserDTO): void {
         const fieldMappings: {
             key: keyof UserDTO;
-            component: keyof ChangeDataChildren;
+            component: keyof ChangeDataProps;
         }[] = [
             { key: 'email', component: 'emailInput' },
             { key: 'login', component: 'loginInput' },

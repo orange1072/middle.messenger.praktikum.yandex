@@ -26,11 +26,18 @@ type TProps = {
     addUserLink?: Link;
     iconModalLink?: Link;
     deleteUserLink?: Link;
+    chatItem?: ChatItem;
+    header?: MainPageHeader;
+    main?: Main;
+    mainHeaderLink?: Link;
+    modalAdd?: AddUserModal;
+    modalDelete?: DeleteUserModal;
+    chatAdd?: AddChatModal;
 };
 
-export class Chat extends Block {
-    constructor(props: TProps) {
-        const main = new Main(props);
+export class Chat extends Block<TProps> {
+    constructor(props?: TProps) {
+        const main = new Main(props || {});
         const modalAdd = new AddUserModal();
         const chatAdd = new AddChatModal();
         const modalDelete = new DeleteUserModal();

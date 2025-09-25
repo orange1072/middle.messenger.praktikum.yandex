@@ -1,13 +1,8 @@
 import { HTTP } from '../utils/HTTP';
 import { BaseAPI } from '../utils/BaseApi';
-import { data } from 'autoprefixer';
 
 const API_ROOT = 'https://ya-praktikum.tech/api/v2';
 const http = new HTTP();
-type UserDelete = {
-    users: number[];
-    chatId: number;
-};
 export type ChatDTO = { id: number; title: string };
 export type ChatUserDTO = {
     id: number;
@@ -47,8 +42,9 @@ export class ChatsAPI extends BaseAPI {
     }
 
     public getToken(chatId: number) {
-        return http.post<undefined, { token: string }>(
+        return http.post<Record<string, never>, { token: string }>(
             `${API_ROOT}/chats/token/${chatId}`,
+            {},
         );
     }
 
