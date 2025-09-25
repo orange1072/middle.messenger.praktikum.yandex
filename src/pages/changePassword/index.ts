@@ -154,16 +154,12 @@ export class ChangePassword extends Block {
         </div>
        <div class="profile-row"> {{{newPasswordRepeatInputLabel}}}
         {{{newPasswordRepeatInput}}}</div>
-       
         {{{submitButton}}}
         </div> 
-        
       </form>
       </div>
 </div>
 </div>
-
-
     `;
     }
 }
