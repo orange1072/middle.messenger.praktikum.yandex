@@ -5,6 +5,7 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
     "moduleResolution": "Node",
+    "jsx": "preserve",
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,7 +17,8 @@
     "skipLibCheck": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "types": ["vite/client"]
   },
   "include": ["src"]
 }

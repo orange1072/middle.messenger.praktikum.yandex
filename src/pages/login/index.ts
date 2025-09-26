@@ -4,9 +4,16 @@ import { Input } from '../../components/input';
 import { Link } from '../../components/link';
 import { Label } from '../../components/label';
 import { createValidator } from '../../utils/createValidator';
+import { AuthAPI } from '../../api/auth';
+import { Router } from '../../framework/Router';
+import { AuthService } from '../../utils/AuthService';
 
 export class Login extends Block {
     constructor() {
+        const validateLogin = createValidator('login');
+        const validatePassword = createValidator('password');
+        const auth = new AuthAPI();
+        const router = new Router('#app');
         const loginInputLabel = new Label({
             text: 'Логин',
             for: 'login',
@@ -19,7 +26,8 @@ export class Login extends Block {
             attr: { class: 'input-under-line' },
             required: true,
             events: {
-                'blur:input': createValidator('login'),
+                'input:input': validateLogin,
+                'blur:input': validateLogin,
             },
         });
 
@@ -35,14 +43,15 @@ export class Login extends Block {
             attr: { class: 'input-under-line' },
             required: true,
             events: {
-                'blur:input': createValidator('password'),
+                'input:input': validatePassword,
+                'blur:input': validatePassword,
             },
         });
         const submitButton = new Button({
             text: 'Авторизоваться',
             type: 'submit',
             events: {
-                click: (e) => {
+                click: async (e) => {
                     e.preventDefault();
 
                     const loginEl = document.getElementById(
@@ -52,10 +61,7 @@ export class Login extends Block {
                         'password',
                     ) as HTMLInputElement;
 
-                    const validators = [
-                        createValidator('login'),
-                        createValidator('password'),
-                    ];
+                    const validators = [validateLogin, validatePassword];
 
                     // вызвать валидацию всех полей
                     const errors = validators
@@ -75,22 +81,41 @@ export class Login extends Block {
                             login: loginEl?.value,
                             password: passwordEl?.value,
                         };
+                        try {
+                            const response = await auth.signin(data);
+
+                            if (response) {
+                                // Получаем информацию о пользователе после успешной авторизации
+                                const user = await auth.getUser();
+                                AuthService.setAuthenticated(user);
+                                console.log('✅ Авторизация успешна');
+                                setTimeout(() => {
+                                    router.go('/messenger');
+                                }, 1000);
+                            }
+                        } catch (error) {
+                            console.error('❌ Ошибка авторизации:', error);
+                            // Проверяем, не авторизован ли уже пользователь
+                            if (error instanceof Error && error.message.includes('User already in system')) {
+                                try {
+                                    const user = await auth.getUser();
+                                    AuthService.setAuthenticated(user);
+                                    router.go('/messenger');
+                                } catch (getUserError) {
+                                    console.error('❌ Ошибка получения пользователя:', getUserError);
+                                }
+                            }
+                        }
                         console.log('📦 Данные формы:', data);
                     }
                 },
             },
-            attr: { class: 'btn,btn-primary,btn-authorization' },
+            attr: { class: 'btn btn-primary btn-authorization' },
         });
 
         const returnChatLink = new Link({
             text: 'Нет аккаунта?',
-            href: '/RegistrationPage',
-            events: {
-                click: (e: Event) => {
-                    e.preventDefault();
-                    alert('Переход на страницу входа');
-                },
-            },
+            href: '/sign-up',
             attr: { class: 'no-account-link' },
         });
 

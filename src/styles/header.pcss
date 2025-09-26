@@ -1,27 +1,36 @@
-.main-header {
-    width: 500px;
-    height: 100px;
-    background-color: #fff;
+@import url("global.pcss");
 
+.main-header {
+    width: 310px;
+    height: 60px;
+    background-color: #fff;
 }
 
 .main-header-form {
     display: flex;
-    justify-content: flex-start;
-    padding-top: 20px;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px 0;
 }
 
 .main-header-link {
     display: flex;
-    justify-content: flex-end;
     color: #999;
+    margin-right: 15px;
+    justify-content: flex-end;
 }
 
 .main-header-input {
     background-color: #efefef;
-    width: 500px;
-    border-radius: 5%;
+    width: 260px;
+    border-radius: 16px;
     height: 32px;
+    text-align: left;
+    padding: 0 12px;
+}
+
+.main-header-input>input{
+    background-color: transparent;
     text-align: center;
-    margin-top: 20px;
+    padding-top: 7px;
 }

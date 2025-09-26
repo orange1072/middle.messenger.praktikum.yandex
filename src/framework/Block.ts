@@ -14,7 +14,7 @@ type BlockProps = {
     [key: string]: unknown;
 };
 
-export abstract class Block<TProps extends BlockProps = BlockProps> {
+export class Block<TProps extends BlockProps = BlockProps> {
     static EVENTS = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
@@ -266,13 +266,15 @@ export abstract class Block<TProps extends BlockProps = BlockProps> {
 
     show(): void {
         if (this._element) {
-            this._element.style.display = 'flex';
+            this._element.style.display = '';
+            this._element.style.visibility = 'visible';
         }
     }
 
     hide(): void {
         if (this._element) {
             this._element.style.display = 'none';
+            this._element.style.visibility = 'hidden';
         }
     }
 }

@@ -2,14 +2,36 @@ import { Block } from '../../framework/Block';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { Label } from '../../components/label';
-import { Avatar } from '../../components/avatar';
 import { createValidator } from '../../utils/createValidator';
+import { Link } from '../../components/link';
+import { Router } from '../../framework/Router';
+import { UsersAPI } from '../../api/users';
+import { CONFIG } from '../../config';
 
 export class ChangePassword extends Block {
     constructor() {
-        const avatar = new Avatar({
-            src: 'avatar',
-            attr: { class: 'profile-avatar' },
+        const changePassword = new UsersAPI();
+        const router = new Router();
+        const backArrowLink = new Link({
+            text: '',
+            hasIcon: true,
+            attr: { class: 'back-arrow' },
+            href: '',
+            events: {
+                click: (e) => {
+                    e.preventDefault();
+                    router.back();
+                },
+            },
+            src: `${CONFIG.STATIC_BASE_URL}/sendMessage.png`,
+            iconClass: 'back-arrow-link',
+            iconStyle: 'width: 30px; height: 30px;',
+        });
+        const changeAvatar = new Link({
+            text: 'Поменять аватар',
+            attr: { class: 'change-avatar-link' },
+            href: '/change-avatar',
+            events: { click: () => router.go('/change-avatar') },
         });
         const oldPasswordInputLabel = new Label({
             text: 'Старый пароль',
@@ -20,7 +42,7 @@ export class ChangePassword extends Block {
             id: 'oldPassword',
             placeholder: 'Пароль',
             type: 'password',
-            value: '12345',
+            value: '',
             events: {
                 'blur:input': createValidator('oldPassword'),
             },
@@ -32,7 +54,7 @@ export class ChangePassword extends Block {
         const newPasswordInput = new Input({
             name: 'newPassword',
             id: 'newPassword',
-            value: '12345',
+            value: '',
             placeholder: 'Новый пароль',
             type: 'password',
             events: {
@@ -47,7 +69,7 @@ export class ChangePassword extends Block {
             id: 'passwordRepeat',
             name: 'passwordRepeat',
             placeholder: 'Повторите новый пароль',
-            value: '12345',
+            value: '',
             type: 'password',
         });
 
@@ -55,7 +77,7 @@ export class ChangePassword extends Block {
             text: 'Сохранить',
             type: 'submit',
             events: {
-                click: (e) => {
+                click: async (e) => {
                     e.preventDefault();
 
                     const oldPasswordEl = document.getElementById(
@@ -85,9 +107,19 @@ export class ChangePassword extends Block {
                     } else {
                         console.log('✅ Форма валидна!');
                         const data = {
-                            login: oldPasswordEl?.value,
-                            password: newPasswordEl?.value,
+                            oldPassword: oldPasswordEl?.value,
+                            newPassword: newPasswordEl?.value,
                         };
+                        try {
+                            await changePassword.updatePassword(data);
+                            console.log('✅ Данные успешно обновлены');
+                            router.go('/settings');
+                        } catch (error) {
+                            console.error(
+                                '❌ Ошибка при обновлении данных:',
+                                error,
+                            );
+                        }
                         console.log('📦 Данные формы:', data);
                     }
                 },
@@ -96,7 +128,7 @@ export class ChangePassword extends Block {
         });
 
         super({
-            avatar,
+            changeAvatar,
             oldPasswordInputLabel,
             oldPasswordInput,
             newPasswordInputLabel,
@@ -104,13 +136,17 @@ export class ChangePassword extends Block {
             newPasswordRepeatInputLabel,
             newPasswordRepeatInput,
             submitButton,
+            backArrowLink,
         });
     }
 
     protected render(): string {
         return `
 <div class="change-password-page">
-{{{avatar}}}
+ {{{backArrowLink}}} 
+<div class="flex-container-row">
+<div class="flex-container-col">
+{{{changeAvatar}}}
       <form id="myForm" class="profile-data form-container">
       <div class="profile-row">{{{oldPasswordInputLabel}}}
         {{{oldPasswordInput}}}</div>  
@@ -119,12 +155,12 @@ export class ChangePassword extends Block {
         </div>
        <div class="profile-row"> {{{newPasswordRepeatInputLabel}}}
         {{{newPasswordRepeatInput}}}</div>
-       
         {{{submitButton}}}
         </div> 
-        
       </form>
       </div>
+</div>
+</div>
     `;
     }
 }

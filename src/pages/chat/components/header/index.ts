@@ -1,26 +1,12 @@
-import { Link } from '../../../../components/link';
 import { Block } from '../../../../framework/Block';
 import { Input } from '../../../../components/input';
 import { Avatar } from '../../../../components/avatar';
 
 export class MainPageHeader extends Block {
     constructor() {
-        const mainHeaderLink = new Link({
-            text: 'Профиль >',
-            dataPage: 'ProfilePage',
-            href: '#',
-            events: {
-                click: (e: Event) => {
-                    e.preventDefault();
-                    alert('Переход на страницу входа');
-                },
-            },
-            attr: { class: 'main-header-link' },
-        });
-
         const mainHeaderSearchInput = new Input({
             name: 'search',
-            placeholder: 'Поиск',
+            placeholder: '🔍 Поиск',
             type: 'search',
             attr: { class: 'main-header-input' },
         });
@@ -32,7 +18,6 @@ export class MainPageHeader extends Block {
 
         super({
             messageAvatar,
-            mainHeaderLink,
             mainHeaderSearchInput,
         });
     }
@@ -40,9 +25,8 @@ export class MainPageHeader extends Block {
     protected render(): string {
         return `
 <div class="main-header" >
-    <form class="main-header-form form-container" action="">
+    <form class="main-header-form main-head-container action="">
         {{{mainHeaderSearchInput}}}
-        {{{mainHeaderLink}}}
     </form>
 </div>
     `;
