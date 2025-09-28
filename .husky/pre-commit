@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+echo "🚀 Running pre-commit checks..."
+
+# Простые проверки
+echo "📋 Running ESLint..."
+if ! npm run eslint; then
+    echo "❌ ESLint failed!"
+    exit 1
+fi
+
+echo "🎨 Running CSS lint..."
+if ! npm run lint:css; then
+    echo "❌ CSS lint failed!"
+    exit 1
+fi
+
+echo "🧪 Running tests..."
+if ! npm run test; then
+    echo "❌ Tests failed!"
+    exit 1
+fi
+
+echo "🏗️  Running prebuild..."
+if ! npm run prebuild; then
+    echo "❌ Prebuild failed!"
+    exit 1
+fi
+
+echo "✅ All checks passed! Committing..."
